@@ -1789,3 +1789,10 @@
 // $kbd-bg:                            $gray-900 !default;
 
 // $pre-color:                         unset !default;
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 1630px,
+  xl: 1630px,
+  xxl: 1630px
+);
