@@ -52,8 +52,8 @@ const _nav = [
         items: [
           {
             component: CNavItem,
-            name: 'Transactions',
-            to: '/base/breadcrumbs',
+            name: 'Appointment',
+            to: '/appointment',
           },
         ],
       },
