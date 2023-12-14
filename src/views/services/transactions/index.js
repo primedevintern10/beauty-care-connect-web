@@ -1,6 +1,6 @@
 import React from 'react'
 // import AppointmentFilter from './AppointmentFilter'
-import AppointmentTable from './AppointmentTable'
+import AppointmentTable from './ServiceTable'
 const Appointments = () => {
   return (
     <>

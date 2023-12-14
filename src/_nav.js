@@ -28,26 +28,26 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Appointment',
-    to: '/base',
+    to: '#',
     icon: <CIcon icon={cilCalendarCheck} customClassName="nav-icon" />,
     items: [
       {
         component: CNavGroup,
         name: 'Approval',
-        to: '/base/accordion',
+        to: '#',
         icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
       {
         component: CNavGroup,
         name: 'Transactions',
-        to: '/base/breadcrumbs',
+        to: '#',
         icon: <CIcon icon={cilSwapHorizontal} customClassName="nav-icon" />,
         items: [
           {
@@ -60,26 +60,26 @@ const _nav = [
       {
         component: CNavGroup,
         name: 'Report',
-        to: '/base/cards',
+        to: '#',
         icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
       {
         component: CNavGroup,
         name: 'Masters',
-        to: '/base/carousels',
+        to: '#',
         icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
@@ -88,58 +88,58 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Reviews',
-    to: '/buttons',
+    to: '#',
     icon: <CIcon icon={cilFindInPage} customClassName="nav-icon" />,
     items: [
       {
         component: CNavGroup,
         name: 'Approval',
-        to: '/base/accordion',
+        to: '#',
         icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
       {
         component: CNavGroup,
         name: 'Transactions',
-        to: '/base/breadcrumbs',
+        to: '#',
         icon: <CIcon icon={cilSwapHorizontal} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '/review',
           },
         ],
       },
       {
         component: CNavGroup,
         name: 'Report',
-        to: '/base/cards',
+        to: '#',
         icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
       {
         component: CNavGroup,
         name: 'Masters',
-        to: '/base/carousels',
+        to: '#',
         icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
@@ -153,52 +153,52 @@ const _nav = [
       {
         component: CNavGroup,
         name: 'Approval',
-        to: '/base/accordion',
+        to: '#',
         icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
       {
         component: CNavGroup,
         name: 'Transactions',
-        to: '/base/breadcrumbs',
+        to: '#',
         icon: <CIcon icon={cilSwapHorizontal} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '/service',
           },
         ],
       },
       {
         component: CNavGroup,
         name: 'Report',
-        to: '/base/cards',
+        to: '#',
         icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
       {
         component: CNavGroup,
         name: 'Masters',
-        to: '/base/carousels',
+        to: '#',
         icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
         items: [
           {
             component: CNavItem,
             name: 'Transactions',
-            to: '/base/breadcrumbs',
+            to: '#',
           },
         ],
       },
@@ -212,7 +212,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Company Policy',
-        to: '/base/accordion',
+        to: '#',
         icon: <CIcon icon={cilCircle} customClassName="nav-icon" />,
       },
     ],
