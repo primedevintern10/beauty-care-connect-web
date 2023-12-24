@@ -197,8 +197,8 @@ const _nav = [
         items: [
           {
             component: CNavItem,
-            name: 'Transactions',
-            to: '#',
+            name: 'Category',
+            to: '/category',
           },
         ],
       },

@@ -1,0 +1,186 @@
+import React, { useState, useEffect } from 'react'
+import CIcon from '@coreui/icons-react'
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CButton,
+  CPopover,
+} from '@coreui/react'
+import { cilPlus, cilPen, cilDelete } from '@coreui/icons'
+
+import CategoryModel from './CategoryModel'
+
+const CategoryTable = () => {
+  const [visible, setVisible] = useState(false)
+  const [formType, setFormType] = useState('')
+  const [categoryTableData, setcategoryTableData] = useState([])
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await fetch('http://localhost:80/nera/')
+        const result = await response.json()
+        setcategoryTableData(result)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+    fetchCategory()
+  }, [])
+
+  const handleEvents = (isvisible, type) => {
+    setVisible(isvisible)
+    setFormType(type)
+  }
+
+  return (
+    <>
+      <CRow>
+        <CCol xs={12}>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>Category</strong> <small></small>
+              <CButton
+                color="primary"
+                variant="outline"
+                size="sm"
+                className="float-sm-end"
+                onClick={() => handleEvents(true, 'add')}
+              >
+                <CIcon icon={cilPlus} customClassName="" /> Add
+              </CButton>
+            </CCardHeader>
+            <CCardBody>
+              <CTable>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Category Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Date</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {categoryTableData.map((category) => (
+                    <CTableRow key={category.id}>
+                      <CTableDataCell scope="row">{category.id}</CTableDataCell>
+                      <CTableDataCell>{category.CategoryName}</CTableDataCell>
+                      <CTableDataCell>{category.CreatedDate}</CTableDataCell>
+                      <CTableDataCell>
+                        <p>
+                          <span
+                            className={`badge rounded-pill text-bg-${
+                              category.Status === 1 ? 'success' : 'danger'
+                            }`}
+                          >
+                            {category.Status === 1 ? 'Active' : 'Inactive'}
+                          </span>
+                        </p>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
+                          <CButton
+                            color="warning"
+                            variant="outline"
+                            size="sm"
+                            className="me-1"
+                            onClick={() => handleEvents(true, 'edit')}
+                          >
+                            <CIcon icon={cilPen} customClassName="" />
+                          </CButton>
+                        </CPopover>
+                        <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
+                          <CButton color="danger" variant="outline" size="sm" className="me-1">
+                            <CIcon icon={cilDelete} customClassName="" />
+                          </CButton>
+                        </CPopover>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+
+                  {/* <CTableRow>
+                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
+                    <CTableDataCell>APT/1002</CTableDataCell>
+                    <CTableDataCell>Neranjan</CTableDataCell>
+                    <CTableDataCell>2023-12-15</CTableDataCell>
+                    <CTableDataCell>15:50</CTableDataCell>
+                    <CTableDataCell>
+                      <p>
+                        <span className="badge rounded-pill text-bg-warning">On Going</span>
+                      </p>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
+                        <CButton
+                          color="warning"
+                          variant="outline"
+                          size="sm"
+                          className="me-1"
+                          onClick={() => handleEvents(true, 'edit')}
+                        >
+                          <CIcon icon={cilPen} customClassName="" />
+                        </CButton>
+                      </CPopover>
+                      <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
+                        <CButton color="danger" variant="outline" size="sm">
+                          <CIcon icon={cilDelete} customClassName="" />
+                        </CButton>
+                      </CPopover>
+                    </CTableDataCell>
+                  </CTableRow>
+                  <CTableRow>
+                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
+                    <CTableDataCell>APT/1002</CTableDataCell>
+                    <CTableDataCell>Neranjan</CTableDataCell>
+                    <CTableDataCell>2023-12-15</CTableDataCell>
+                    <CTableDataCell>15:50</CTableDataCell>
+                    <CTableDataCell>
+                      <p>
+                        <span className="badge rounded-pill text-bg-success">Colmpleted</span>
+                      </p>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
+                        <CButton
+                          color="warning"
+                          variant="outline"
+                          size="sm"
+                          className="me-1"
+                          onClick={() => handleEvents(true, 'edit')}
+                        >
+                          <CIcon icon={cilPen} customClassName="" />
+                        </CButton>
+                      </CPopover>
+                      <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
+                        <CButton color="danger" variant="outline" size="sm">
+                          <CIcon icon={cilDelete} customClassName="" />
+                        </CButton>
+                      </CPopover>
+                    </CTableDataCell>
+                  </CTableRow> */}
+                </CTableBody>
+              </CTable>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+      <CategoryModel
+        showModal={visible}
+        closeMOdel={() => setVisible(false)}
+        dataModel={formType}
+      />
+    </>
+  )
+}
+
+export default CategoryTable

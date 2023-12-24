@@ -24,6 +24,12 @@ const AddService = React.lazy(() => import('./views/services/transactions/AddSer
 const EditService = React.lazy(() => import('./views/services/transactions/EditService'))
 const ViewService = React.lazy(() => import('./views/services/transactions/ViewService'))
 
+// Category
+const Category = React.lazy(() => import('./views/services/masters/category/index'))
+const AddCategory = React.lazy(() => import('./views/services/masters/category/AddCategory'))
+const EditCategory = React.lazy(() => import('./views/services/masters/category/EditCategory'))
+const ViewCategory = React.lazy(() => import('./views/services/masters/category/ViewCategory'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -41,6 +47,11 @@ const routes = [
   { path: '/service-add', name: 'Add Service', element: AddService },
   { path: '/service-edit', name: 'Edit Service', element: EditService },
   { path: '/service-view', name: 'View Service', element: ViewService },
+
+  { path: '/category', name: 'Category', element: Category },
+  { path: '/category-add', name: 'Add Category', element: AddCategory },
+  { path: '/category-edit', name: 'Edit Category', element: EditCategory },
+  { path: '/category-view', name: 'View Category', element: ViewCategory },
 ]
 
 export default routes
