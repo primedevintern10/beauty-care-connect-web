@@ -22,14 +22,16 @@ import CategoryModel from './CategoryModel'
 const CategoryTable = () => {
   const [visible, setVisible] = useState(false)
   const [formType, setFormType] = useState('')
-  const [categoryTableData, setcategoryTableData] = useState([])
+  const [categoryTableData, setCategoryTableData] = useState([])
+  const [categoryID, setCategoryID] = useState('')
+  const [categoryTableDataByID, setCategoryTableDataByID] = useState([])
 
   useEffect(() => {
     const fetchCategory = async () => {
       try {
         const response = await fetch('http://localhost:80/nera/')
         const result = await response.json()
-        setcategoryTableData(result)
+        setCategoryTableData(result)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -37,9 +39,47 @@ const CategoryTable = () => {
     fetchCategory()
   }, [])
 
-  const handleEvents = (isvisible, type) => {
+  const handleCategoryEdit = async (isvisible, type, categoryID = null) => {
+    try {
+      const response = await fetch('http://localhost:80/nera/' + categoryID)
+      const result = await response.json()
+      setCategoryTableDataByID(result)
+      setVisible(isvisible)
+      setFormType(type)
+      setCategoryID(categoryID)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
+  const handleCategoryAdd = (isvisible, type, categoryID = null) => {
     setVisible(isvisible)
     setFormType(type)
+    setCategoryID(categoryID)
+  }
+
+  const handleCategoryDelete = async (event, categoryID) => {
+    event.preventDefault()
+
+    try {
+      const response = await fetch('https://example.com/api/submit', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(categoryID),
+      })
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+
+      // Handle success - you can process the response here
+      console.log('Form submitted successfully')
+    } catch (error) {
+      // Handle error
+      console.error('Error submitting form:', error.message)
+    }
   }
 
   return (
@@ -54,7 +94,7 @@ const CategoryTable = () => {
                 variant="outline"
                 size="sm"
                 className="float-sm-end"
-                onClick={() => handleEvents(true, 'add')}
+                onClick={() => handleCategoryAdd(true, 'add')}
               >
                 <CIcon icon={cilPlus} customClassName="" /> Add
               </CButton>
@@ -94,80 +134,25 @@ const CategoryTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleEvents(true, 'edit')}
+                            onClick={() => handleCategoryEdit(true, 'edit', category.id)}
                           >
                             <CIcon icon={cilPen} customClassName="" />
                           </CButton>
                         </CPopover>
                         <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="danger" variant="outline" size="sm" className="me-1">
+                          <CButton
+                            color="danger"
+                            variant="outline"
+                            size="sm"
+                            className="me-1"
+                            onClick={() => handleCategoryDelete(category.id)}
+                          >
                             <CIcon icon={cilDelete} customClassName="" />
                           </CButton>
                         </CPopover>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
-
-                  {/* <CTableRow>
-                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                    <CTableDataCell>APT/1002</CTableDataCell>
-                    <CTableDataCell>Neranjan</CTableDataCell>
-                    <CTableDataCell>2023-12-15</CTableDataCell>
-                    <CTableDataCell>15:50</CTableDataCell>
-                    <CTableDataCell>
-                      <p>
-                        <span className="badge rounded-pill text-bg-warning">On Going</span>
-                      </p>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
-                        <CButton
-                          color="warning"
-                          variant="outline"
-                          size="sm"
-                          className="me-1"
-                          onClick={() => handleEvents(true, 'edit')}
-                        >
-                          <CIcon icon={cilPen} customClassName="" />
-                        </CButton>
-                      </CPopover>
-                      <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
-                        <CButton color="danger" variant="outline" size="sm">
-                          <CIcon icon={cilDelete} customClassName="" />
-                        </CButton>
-                      </CPopover>
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                    <CTableDataCell>APT/1002</CTableDataCell>
-                    <CTableDataCell>Neranjan</CTableDataCell>
-                    <CTableDataCell>2023-12-15</CTableDataCell>
-                    <CTableDataCell>15:50</CTableDataCell>
-                    <CTableDataCell>
-                      <p>
-                        <span className="badge rounded-pill text-bg-success">Colmpleted</span>
-                      </p>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
-                        <CButton
-                          color="warning"
-                          variant="outline"
-                          size="sm"
-                          className="me-1"
-                          onClick={() => handleEvents(true, 'edit')}
-                        >
-                          <CIcon icon={cilPen} customClassName="" />
-                        </CButton>
-                      </CPopover>
-                      <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
-                        <CButton color="danger" variant="outline" size="sm">
-                          <CIcon icon={cilDelete} customClassName="" />
-                        </CButton>
-                      </CPopover>
-                    </CTableDataCell>
-                  </CTableRow> */}
                 </CTableBody>
               </CTable>
             </CCardBody>
@@ -178,6 +163,8 @@ const CategoryTable = () => {
         showModal={visible}
         closeMOdel={() => setVisible(false)}
         dataModel={formType}
+        categoryID={categoryID}
+        categoryData={categoryTableDataByID}
       />
     </>
   )

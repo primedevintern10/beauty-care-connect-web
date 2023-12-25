@@ -5,7 +5,6 @@ import AddCategoryForm from './AddCategory'
 import EditCategoryForm from './EditCategory'
 
 const CategoryModel = (modelProps) => {
-  console.log(modelProps)
   return (
     <>
       <CModal visible={modelProps.showModal} onClose={modelProps.closeMOdel}>
