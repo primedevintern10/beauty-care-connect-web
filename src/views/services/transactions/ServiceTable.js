@@ -21,7 +21,6 @@ import APIURL from 'src/components/ApiConfig'
 
 const ServiceTable = () => {
   const [serviceTableData, setServiceTableData] = useState([])
-  const [serviceTableDataByID, setServiceTableDataByID] = useState([])
 
   const fetchService = async () => {
     try {
@@ -49,32 +48,6 @@ const ServiceTable = () => {
     fetchService()
   }, [])
 
-  const handleServiceEdit = async (isvisible, type, serviceID = null) => {
-    try {
-      await fetch(APIURL + 'user/' + serviceID, {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data)
-          serviceTableDataByID(data)
-        })
-        .catch((err) => {
-          console.log(err.message)
-        })
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
-
-  const handleServiceDelete = async (event, ServiceID) => {
-    event.preventDefault()
-  }
-
   return (
     <>
       {/* <CRow>
@@ -95,7 +68,7 @@ const ServiceTable = () => {
           <CCard className="mb-4">
             <CCardHeader>
               <strong>Services</strong> <small></small>
-              <CLink href="/services-add" size="sm">
+              <CLink href="/service-add" size="sm">
                 <CButton color="primary" variant="outline" size="sm" className="float-sm-end">
                   <CIcon icon={cilPlus} customClassName="" /> Add
                 </CButton>
@@ -134,38 +107,23 @@ const ServiceTable = () => {
                         </p>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <CLink href="/service-edit" size="sm" className="me-1">
+                        <CLink href={'/service-edit?id=' + service._id} size="sm" className="me-1">
                           <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
-                            <CButton
-                              color="warning"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleServiceEdit(true, 'edit', service._id)}
-                            >
+                            <CButton color="warning" variant="outline" size="sm">
                               <CIcon icon={cilPen} customClassName="" />
                             </CButton>
                           </CPopover>
                         </CLink>
-                        <CLink href="/service-view" size="sm" className="me-1">
+                        <CLink href={'/service-view' + service._id} size="sm" className="me-1">
                           <CPopover content="View" placement="top" trigger={['hover', 'focus']}>
-                            <CButton
-                              color="info"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleServiceEdit(true, 'edit', service._id)}
-                            >
+                            <CButton color="info" variant="outline" size="sm">
                               <CIcon icon={cilFile} customClassName="" />
                             </CButton>
                           </CPopover>
                         </CLink>
                         <CLink href="/service-add" size="sm" className="me-1">
                           <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
-                            <CButton
-                              color="danger"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleServiceEdit(true, 'edit', service._id)}
-                            >
+                            <CButton color="danger" variant="outline" size="sm">
                               <CIcon icon={cilDelete} customClassName="" />
                             </CButton>
                           </CPopover>
