@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -16,11 +16,21 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import APIURL from 'src/components/ApiConfig'
+import Toasts from 'src/views/toasts/Toasts'
 
 const Login = () => {
   const [userFormData, setUserFormData] = useState({
     username: '',
     password: '',
+  })
+
+  const [userTost, setUserTost] = useState({
+    title: '',
+    message: '',
+    isAutoHide: false,
+    isVisible: false,
+    type: '',
   })
 
   const [validated, setValidated] = useState(false)
@@ -35,35 +45,59 @@ const Login = () => {
 
   const HandleUserFormSubmit = async (event) => {
     const form = event.currentTarget
-    const navigate = useNavigate()
-    console.log('asfh')
     event.preventDefault()
 
     if (form.checkValidity() === false) {
       event.stopPropagation()
     } else {
+      setValidated(true)
       try {
-        const response = await fetch('https://example.com/api/submit', {
+        await fetch(APIURL + 'auth/login', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify(userFormData),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
         })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
+            setUserTost({
+              title: 'User Login',
+              message: 'Login Successful...!',
+              isAutoHide: true,
+              isVisible: true,
+              type: 's',
+            })
+            localStorage.setItem('accessToken', data.jwtToken)
+            localStorage.setItem('jwt-token', data.jwtToken)
+            localStorage.setItem('username', data.username)
+            window.location.href = '/dashboard'
+          })
+          .catch((err) => {
+            console.log(err.message)
 
-        // Handle success - you can process the response here
-        console.log('Form submitted successfully')
-        return navigate('/dashboard')
+            setUserTost({
+              title: 'User Login',
+              message: 'Login Unsuccessful...! Error : ' + err.message,
+              isAutoHide: true,
+              isVisible: true,
+              type: 'd',
+            })
+          })
       } catch (error) {
         // Handle error
         console.error('Error submitting form:', error.message)
+        setUserTost({
+          title: 'User Login',
+          message: 'Login Unsuccessful...! Error : ' + error.message,
+          isAutoHide: true,
+          isVisible: true,
+          type: 'd',
+        })
       }
     }
-    setValidated(true)
   }
 
   return (
@@ -91,6 +125,7 @@ const Login = () => {
                         placeholder="Username"
                         autoComplete="username"
                         name="username"
+                        required
                         onChange={HandleUserFormChange}
                         value={userFormData.username}
                       />
@@ -104,6 +139,7 @@ const Login = () => {
                         placeholder="Password"
                         autoComplete="current-password"
                         name="password"
+                        required
                         onChange={HandleUserFormChange}
                         value={userFormData.password}
                       />
@@ -141,6 +177,7 @@ const Login = () => {
           </CCol>
         </CRow>
       </CContainer>
+      <Toasts dataToasts={userTost} />
     </div>
   )
 }

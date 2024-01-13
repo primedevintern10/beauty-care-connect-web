@@ -17,19 +17,19 @@ import {
 } from '@coreui/react'
 import { cilPlus, cilPen, cilDelete } from '@coreui/icons'
 
-import CategoryModel from './CategoryModel'
+import ServiceModel from './ServiceModel'
 import APIURL from 'src/components/ApiConfig'
 
-const CategoryTable = () => {
+const ServiceTable = () => {
   const [visible, setVisible] = useState(false)
   const [formType, setFormType] = useState('')
-  const [categoryTableData, setCategoryTableData] = useState([])
-  const [categoryID, setCategoryID] = useState('')
-  const [categoryTableDataByID, setCategoryTableDataByID] = useState([])
+  const [serviceTableData, setServiceTableData] = useState([])
+  const [serviceID, setServiceID] = useState('')
+  const [serviceTableDataByID, setServiceTableDataByID] = useState([])
 
-  const fetchCategory = async () => {
+  const fetchService = async () => {
     try {
-      await fetch(APIURL + 'serviceCategory', {
+      await fetch(APIURL + 'service', {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -39,7 +39,7 @@ const CategoryTable = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          setCategoryTableData(data)
+          setServiceTableData(data)
         })
         .catch((err) => {
           console.log(err.message)
@@ -50,17 +50,17 @@ const CategoryTable = () => {
   }
 
   useEffect(() => {
-    fetchCategory()
+    fetchService()
   }, [])
 
   const closeMode = async () => {
     setVisible(false)
-    fetchCategory()
+    fetchService()
   }
 
-  const handleCategoryEdit = async (isvisible, type, categoryID = null) => {
+  const handleServiceEdit = async (isvisible, type, serviceID = null) => {
     try {
-      await fetch(APIURL + 'serviceCategory/' + categoryID, {
+      await fetch(APIURL + 'service/' + serviceID, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -70,10 +70,10 @@ const CategoryTable = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          setCategoryTableDataByID(data)
+          setServiceTableDataByID(data)
           setVisible(isvisible)
           setFormType(type)
-          setCategoryID(categoryID)
+          setServiceID(serviceID)
         })
         .catch((err) => {
           console.log(err.message)
@@ -83,16 +83,18 @@ const CategoryTable = () => {
     }
   }
 
-  const handleCategoryAdd = (isvisible, type, categoryID = null) => {
+  const handleServiceAdd = (isvisible, type, serviceID = null) => {
     setVisible(isvisible)
     setFormType(type)
-    setCategoryID(categoryID)
+    setServiceID(serviceID)
   }
 
-  const handleCategoryDelete = async (categoryID) => {
+  const handleServiceDelete = async (event, serviceID) => {
+    event.preventDefault()
+
     try {
-      await fetch(APIURL + 'serviceCategory/' + categoryID, {
-        method: 'DELETE',
+      await fetch(APIURL + 'service/' + serviceID, {
+        method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
@@ -101,13 +103,10 @@ const CategoryTable = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          fetchCategory()
         })
         .catch((err) => {
           console.log(err.message)
-          fetchCategory()
         })
-      // fetchCategory()
     } catch (error) {
       // Handle error
       console.error('Error submitting form:', error.message)
@@ -120,13 +119,13 @@ const CategoryTable = () => {
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Category</strong> <small></small>
+              <strong>Service</strong> <small></small>
               <CButton
                 color="primary"
                 variant="outline"
                 size="sm"
                 className="float-sm-end"
-                onClick={() => handleCategoryAdd(true, 'add')}
+                onClick={() => handleServiceAdd(true, 'add')}
               >
                 <CIcon icon={cilPlus} customClassName="" /> Add
               </CButton>
@@ -143,7 +142,7 @@ const CategoryTable = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {categoryTableData.map((category, index) => (
+                  {serviceTableData.map((category, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell scope="row">{index + 1}</CTableDataCell>
                       <CTableDataCell>{category.name}</CTableDataCell>
@@ -166,7 +165,7 @@ const CategoryTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleCategoryEdit(true, 'edit', category._id)}
+                            onClick={() => handleServiceEdit(true, 'edit', category._id)}
                           >
                             <CIcon icon={cilPen} customClassName="" />
                           </CButton>
@@ -177,7 +176,7 @@ const CategoryTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleCategoryDelete(category._id)}
+                            onClick={() => handleServiceDelete(category._id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />
                           </CButton>
@@ -191,15 +190,15 @@ const CategoryTable = () => {
           </CCard>
         </CCol>
       </CRow>
-      <CategoryModel
+      <ServiceModel
         showModal={visible}
         closeModel={() => closeMode()}
         dataModel={formType}
-        categoryID={categoryID}
-        categoryData={categoryTableDataByID}
+        serviceID={serviceID}
+        serviceData={serviceTableDataByID}
       />
     </>
   )
 }
 
-export default CategoryTable
+export default ServiceTable

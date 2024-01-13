@@ -30,6 +30,16 @@ const AddCategory = React.lazy(() => import('./views/services/masters/category/A
 const EditCategory = React.lazy(() => import('./views/services/masters/category/EditCategory'))
 const ViewCategory = React.lazy(() => import('./views/services/masters/category/ViewCategory'))
 
+// Employee
+const Employee = React.lazy(() => import('./views/administration/masters/employee/index'))
+const AddEmployee = React.lazy(() => import('./views/administration/masters/employee/AddEmployee'))
+const EditEmployee = React.lazy(() =>
+  import('./views/administration/masters/employee/EditEmployee'),
+)
+const ViewEmployee = React.lazy(() =>
+  import('./views/administration/masters/employee/ViewEmployee'),
+)
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -52,6 +62,11 @@ const routes = [
   { path: '/category-add', name: 'Add Category', element: AddCategory },
   { path: '/category-edit', name: 'Edit Category', element: EditCategory },
   { path: '/category-view', name: 'View Category', element: ViewCategory },
+
+  { path: '/employee', name: 'Employee', element: Employee },
+  { path: '/employee-add', name: 'Add Employee', element: AddEmployee },
+  { path: '/employee-edit', name: 'Edit Employee', element: EditEmployee },
+  { path: '/employee-view', name: 'View Employee', element: ViewEmployee },
 ]
 
 export default routes

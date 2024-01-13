@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { CCol, CForm, CFormInput, CFormFeedback, CFormLabel, CButton } from '@coreui/react'
+import APIURL from 'src/components/ApiConfig'
 
 const AddCategoryForm = () => {
   const [validated, setValidated] = useState(false)
 
   const [categoryFormData, setCategoryFormData] = useState({
-    txtAddCategoryName: '',
+    get_id: '',
+    name: '',
   })
 
   const handleCategoryFormChange = (e) => {
@@ -25,26 +27,27 @@ const AddCategoryForm = () => {
       event.stopPropagation()
     } else {
       try {
-        const response = await fetch('https://example.com/api/submit', {
+        setValidated(true)
+        await fetch(APIURL + 'serviceCategory', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify(categoryFormData),
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            'Content-type': 'application/json; charset=UTF-8',
+          },
         })
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-
-        // Handle success - you can process the response here
-        console.log('Form submitted successfully')
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
       } catch (error) {
         // Handle error
         console.error('Error submitting form:', error.message)
       }
     }
-    setValidated(true)
   }
 
   return (
@@ -55,22 +58,14 @@ const AddCategoryForm = () => {
       onSubmit={handleCategoryFormSubmit}
     >
       <CCol md={12}>
-        <CFormLabel htmlFor="txtAddCategoryName">Category Name</CFormLabel>
+        <CFormLabel htmlFor="name">Category Name</CFormLabel>
         <CFormInput
           type="text"
-          id="txtAddCategoryName"
-          name="txtAddCategoryName"
+          id="name"
+          name="name"
           placeholder="Category Name"
           required
-          value={categoryFormData.categoryName}
-          onChange={handleCategoryFormChange}
-        />
-        <CFormInput
-          type="hidden"
-          id="txtAddCategoryID"
-          name="txtAddCategoryID"
-          required
-          value={categoryFormData.categoryName}
+          value={categoryFormData.name}
           onChange={handleCategoryFormChange}
         />
         <CFormFeedback valid>Looks good!</CFormFeedback>

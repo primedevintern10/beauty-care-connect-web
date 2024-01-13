@@ -11,6 +11,7 @@ import {
   cilHandshake,
   cilSitemap,
   cilCircle,
+  cilUser,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem } from '@coreui/react'
 
@@ -150,19 +151,19 @@ const _nav = [
     name: 'Services',
     icon: <CIcon icon={cilHandshake} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavGroup,
-        name: 'Approval',
-        to: '#',
-        icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Transactions',
-            to: '#',
-          },
-        ],
-      },
+      // {
+      //   component: CNavGroup,
+      //   name: 'Approval',
+      //   to: '#',
+      //   icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
+      //   items: [
+      //     {
+      //       component: CNavItem,
+      //       name: 'Transactions',
+      //       to: '#',
+      //     },
+      //   ],
+      // },
       {
         component: CNavGroup,
         name: 'Transactions',
@@ -171,24 +172,24 @@ const _nav = [
         items: [
           {
             component: CNavItem,
-            name: 'Transactions',
+            name: 'Service',
             to: '/service',
           },
         ],
       },
-      {
-        component: CNavGroup,
-        name: 'Report',
-        to: '#',
-        icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Transactions',
-            to: '#',
-          },
-        ],
-      },
+      // {
+      //   component: CNavGroup,
+      //   name: 'Report',
+      //   to: '#',
+      //   icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+      //   items: [
+      //     {
+      //       component: CNavItem,
+      //       name: 'Transactions',
+      //       to: '#',
+      //     },
+      //   ],
+      // },
       {
         component: CNavGroup,
         name: 'Masters',
@@ -200,6 +201,11 @@ const _nav = [
             name: 'Category',
             to: '/category',
           },
+          // {
+          //   component: CNavItem,
+          //   name: 'Service',
+          //   to: '/service',
+          // },
         ],
       },
     ],
@@ -210,10 +216,18 @@ const _nav = [
     icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
     items: [
       {
-        component: CNavItem,
-        name: 'Company Policy',
+        component: CNavGroup,
+        name: 'Master',
         to: '#',
-        icon: <CIcon icon={cilCircle} customClassName="nav-icon" />,
+        icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
+        items: [
+          {
+            component: CNavItem,
+            name: 'Employee',
+            to: '/employee',
+            // icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+          },
+        ],
       },
     ],
   },

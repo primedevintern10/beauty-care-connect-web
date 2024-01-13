@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import CIcon from '@coreui/icons-react'
 import {
   CCard,
@@ -17,8 +17,64 @@ import {
   CPopover,
 } from '@coreui/react'
 import { cilPlus, cilPen, cilFile, cilDelete } from '@coreui/icons'
+import APIURL from 'src/components/ApiConfig'
 
-const AppointmentTable = () => {
+const ServiceTable = () => {
+  const [serviceTableData, setServiceTableData] = useState([])
+  const [serviceTableDataByID, setServiceTableDataByID] = useState([])
+
+  const fetchService = async () => {
+    try {
+      await fetch(APIURL + 'service', {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          setServiceTableData(data)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchService()
+  }, [])
+
+  const handleServiceEdit = async (isvisible, type, serviceID = null) => {
+    try {
+      await fetch(APIURL + 'user/' + serviceID, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          serviceTableDataByID(data)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
+  const handleServiceDelete = async (event, ServiceID) => {
+    event.preventDefault()
+  }
+
   return (
     <>
       {/* <CRow>
@@ -38,8 +94,8 @@ const AppointmentTable = () => {
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Appointments</strong> <small></small>
-              <CLink href="/appointment-add" size="sm">
+              <strong>Services</strong> <small></small>
+              <CLink href="/services-add" size="sm">
                 <CButton color="primary" variant="outline" size="sm" className="float-sm-end">
                   <CIcon icon={cilPlus} customClassName="" /> Add
                 </CButton>
@@ -50,120 +106,73 @@ const AppointmentTable = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Appointment Code</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Service Code</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Customer Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Date</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Time</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Category</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Req Time</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                    <CTableDataCell>APT/1002</CTableDataCell>
-                    <CTableDataCell>Neranjan</CTableDataCell>
-                    <CTableDataCell>2023-12-15</CTableDataCell>
-                    <CTableDataCell>15:50</CTableDataCell>
-                    <CTableDataCell>
-                      <p>
-                        <span className="badge rounded-pill text-bg-danger">Not Start</span>
-                      </p>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CLink href="/appointment-edit" size="sm" className="me-1">
-                        <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="warning" variant="outline" size="sm">
-                            <CIcon icon={cilPen} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                      <CLink href="/appointment-view" size="sm" className="me-1">
-                        <CPopover content="View" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="info" variant="outline" size="sm">
-                            <CIcon icon={cilFile} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                      <CLink href="/appointment-add" size="sm" className="me-1">
-                        <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="danger" variant="outline" size="sm">
-                            <CIcon icon={cilDelete} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                    <CTableDataCell>APT/1002</CTableDataCell>
-                    <CTableDataCell>Neranjan</CTableDataCell>
-                    <CTableDataCell>2023-12-15</CTableDataCell>
-                    <CTableDataCell>15:50</CTableDataCell>
-                    <CTableDataCell>
-                      <p>
-                        <span className="badge rounded-pill text-bg-warning">On Going</span>
-                      </p>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CLink href="/appointment-edit" size="sm" className="me-1">
-                        <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="warning" variant="outline" size="sm">
-                            <CIcon icon={cilPen} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                      <CLink href="/appointment-view" size="sm" className="me-1">
-                        <CPopover content="View" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="info" variant="outline" size="sm">
-                            <CIcon icon={cilFile} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                      <CLink href="/appointment-delete" size="sm" className="me-1">
-                        <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="danger" variant="outline" size="sm">
-                            <CIcon icon={cilDelete} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                    <CTableDataCell>APT/1002</CTableDataCell>
-                    <CTableDataCell>Neranjan</CTableDataCell>
-                    <CTableDataCell>2023-12-15</CTableDataCell>
-                    <CTableDataCell>15:50</CTableDataCell>
-                    <CTableDataCell>
-                      <p>
-                        <span className="badge rounded-pill text-bg-success">Colmpleted</span>
-                      </p>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CLink href="/appointment-edit" size="sm" className="me-1">
-                        <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="warning" variant="outline" size="sm">
-                            <CIcon icon={cilPen} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                      <CLink href="/appointment-view" size="sm" className="me-1">
-                        <CPopover content="View" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="info" variant="outline" size="sm">
-                            <CIcon icon={cilFile} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                      <CLink href="/appointment-delete" size="sm" className="me-1">
-                        <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
-                          <CButton color="danger" variant="outline" size="sm">
-                            <CIcon icon={cilDelete} customClassName="" />
-                          </CButton>
-                        </CPopover>
-                      </CLink>
-                    </CTableDataCell>
-                  </CTableRow>
+                  {serviceTableData.map((service, index) => (
+                    <CTableRow key={index}>
+                      <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                      <CTableDataCell>{service._id}</CTableDataCell>
+                      <CTableDataCell>{service.name}</CTableDataCell>
+                      <CTableDataCell>{service.serviceCategory.name}</CTableDataCell>
+                      <CTableDataCell>{service.requiredTime}</CTableDataCell>
+                      <CTableDataCell>
+                        <p>
+                          <span
+                            className={`badge rounded-pill text-bg-${
+                              service.isEnabled === true ? 'success' : 'danger'
+                            }`}
+                          >
+                            {service.isEnabled === true ? 'Active' : 'Inactive'}
+                          </span>
+                        </p>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <CLink href="/service-edit" size="sm" className="me-1">
+                          <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
+                            <CButton
+                              color="warning"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleServiceEdit(true, 'edit', service._id)}
+                            >
+                              <CIcon icon={cilPen} customClassName="" />
+                            </CButton>
+                          </CPopover>
+                        </CLink>
+                        <CLink href="/service-view" size="sm" className="me-1">
+                          <CPopover content="View" placement="top" trigger={['hover', 'focus']}>
+                            <CButton
+                              color="info"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleServiceEdit(true, 'edit', service._id)}
+                            >
+                              <CIcon icon={cilFile} customClassName="" />
+                            </CButton>
+                          </CPopover>
+                        </CLink>
+                        <CLink href="/service-add" size="sm" className="me-1">
+                          <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
+                            <CButton
+                              color="danger"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleServiceEdit(true, 'edit', service._id)}
+                            >
+                              <CIcon icon={cilDelete} customClassName="" />
+                            </CButton>
+                          </CPopover>
+                        </CLink>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
                 </CTableBody>
               </CTable>
             </CCardBody>
@@ -174,4 +183,4 @@ const AppointmentTable = () => {
   )
 }
 
-export default AppointmentTable
+export default ServiceTable

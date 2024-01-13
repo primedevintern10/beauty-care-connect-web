@@ -2,23 +2,23 @@ import React, { useState } from 'react'
 import { CCol, CForm, CFormInput, CFormFeedback, CFormLabel, CButton } from '@coreui/react'
 import APIURL from 'src/components/ApiConfig'
 
-const EditCategoryForm = (categoryProps) => {
+const EditServiceForm = (categoryProps) => {
   const [validated, setValidated] = useState(false)
 
-  const [categoryFormData, setCategoryFormData] = useState({
+  const [serviceFormData, setServiceFormData] = useState({
     get_id: categoryProps.CategoryData._id,
     name: categoryProps.CategoryData.name,
   })
 
-  const handleCategoryFormChange = (e) => {
+  const handleServiceFormChange = (e) => {
     const { name, value } = e.target
-    setCategoryFormData((prevData) => ({
+    setServiceFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }))
   }
 
-  const handleCategoryFormSubmit = async (event) => {
+  const handleServiceFormSubmit = async (event) => {
     const form = event.currentTarget
     event.preventDefault()
     if (form.checkValidity() === false) {
@@ -27,9 +27,9 @@ const EditCategoryForm = (categoryProps) => {
       try {
         setValidated(true)
 
-        await fetch(APIURL + 'serviceCategory/' + categoryFormData.get_id, {
+        await fetch(APIURL + 'serviceCategory/' + serviceFormData.get_id, {
           method: 'PUT',
-          body: JSON.stringify(categoryFormData),
+          body: JSON.stringify(serviceFormData),
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
@@ -53,7 +53,7 @@ const EditCategoryForm = (categoryProps) => {
       className="row g-3 needs-validation"
       noValidate
       validated={validated}
-      onSubmit={handleCategoryFormSubmit}
+      onSubmit={handleServiceFormSubmit}
     >
       <CCol md={12}>
         <CFormLabel htmlFor="name">Category Name</CFormLabel>
@@ -63,16 +63,16 @@ const EditCategoryForm = (categoryProps) => {
           name="name"
           placeholder="Category Name"
           required
-          value={categoryFormData.name}
-          onChange={handleCategoryFormChange}
+          value={serviceFormData.name}
+          onChange={handleServiceFormChange}
         />
         <CFormInput
           type="hidden"
           id="get_id"
           name="get_id"
           required
-          value={categoryFormData.get_id}
-          onChange={handleCategoryFormChange}
+          value={serviceFormData.get_id}
+          onChange={handleServiceFormChange}
         />
         <CFormFeedback valid>Looks good!</CFormFeedback>
       </CCol>
@@ -88,4 +88,4 @@ const EditCategoryForm = (categoryProps) => {
   )
 }
 
-export default EditCategoryForm
+export default EditServiceForm

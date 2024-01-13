@@ -1,13 +1,13 @@
 import React from 'react'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 
-import AddCategoryForm from './AddCategory'
-import EditCategoryForm from './EditCategory'
+import AddCategoryForm from './AddEmployee'
+import EditCategoryForm from './EditEmployee'
 
-const CategoryModel = (modelProps) => {
+const EmployeeModel = (modelProps) => {
   return (
     <>
-      <CModal visible={modelProps.showModal} onClose={modelProps.closeModel}>
+      <CModal visible={modelProps.showModal} onClose={modelProps.closeMOdel}>
         <CModalHeader>
           <CModalTitle>{modelProps.dataModel === 'add' ? 'Add' : 'Edit'} Category</CModalTitle>
         </CModalHeader>
@@ -15,11 +15,11 @@ const CategoryModel = (modelProps) => {
           {modelProps.dataModel === 'add' ? (
             <AddCategoryForm />
           ) : (
-            <EditCategoryForm CategoryData={modelProps.categoryData} />
+            <EditCategoryForm employeeData={modelProps.employeeData} />
           )}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={modelProps.closeModel}>
+          <CButton color="secondary" onClick={modelProps.closeMOdel}>
             Close
           </CButton>
         </CModalFooter>
@@ -28,4 +28,4 @@ const CategoryModel = (modelProps) => {
   )
 }
 
-export default CategoryModel
+export default EmployeeModel

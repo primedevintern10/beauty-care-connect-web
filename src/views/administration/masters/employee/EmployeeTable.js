@@ -17,50 +17,44 @@ import {
 } from '@coreui/react'
 import { cilPlus, cilPen, cilDelete } from '@coreui/icons'
 
-import CategoryModel from './CategoryModel'
+import EmployeeModel from './EmployeeModel'
 import APIURL from 'src/components/ApiConfig'
 
-const CategoryTable = () => {
+const EmployeeTable = () => {
   const [visible, setVisible] = useState(false)
   const [formType, setFormType] = useState('')
-  const [categoryTableData, setCategoryTableData] = useState([])
-  const [categoryID, setCategoryID] = useState('')
-  const [categoryTableDataByID, setCategoryTableDataByID] = useState([])
-
-  const fetchCategory = async () => {
-    try {
-      await fetch(APIURL + 'serviceCategory', {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data)
-          setCategoryTableData(data)
-        })
-        .catch((err) => {
-          console.log(err.message)
-        })
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
+  const [employeeTableData, setEmployeeTableData] = useState([])
+  const [employeeID, setEmployeeID] = useState('')
+  const [employeeTableDataByID, setEmployeeTableDataByID] = useState([])
 
   useEffect(() => {
-    fetchCategory()
+    const fetchEmployee = async () => {
+      try {
+        await fetch(APIURL + 'user', {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+            setEmployeeTableData(data)
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+    fetchEmployee()
   }, [])
 
-  const closeMode = async () => {
-    setVisible(false)
-    fetchCategory()
-  }
-
-  const handleCategoryEdit = async (isvisible, type, categoryID = null) => {
+  const handleEmployeeEdit = async (isvisible, type, employeeID = null) => {
     try {
-      await fetch(APIURL + 'serviceCategory/' + categoryID, {
+      await fetch(APIURL + 'user/' + employeeID, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -70,10 +64,10 @@ const CategoryTable = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          setCategoryTableDataByID(data)
+          setEmployeeTableDataByID(data)
           setVisible(isvisible)
           setFormType(type)
-          setCategoryID(categoryID)
+          setEmployeeID(employeeID)
         })
         .catch((err) => {
           console.log(err.message)
@@ -83,35 +77,14 @@ const CategoryTable = () => {
     }
   }
 
-  const handleCategoryAdd = (isvisible, type, categoryID = null) => {
+  const handleEmployeeAdd = (isvisible, type, employeeID = null) => {
     setVisible(isvisible)
     setFormType(type)
-    setCategoryID(categoryID)
+    setEmployeeID(employeeID)
   }
 
-  const handleCategoryDelete = async (categoryID) => {
-    try {
-      await fetch(APIURL + 'serviceCategory/' + categoryID, {
-        method: 'DELETE',
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data)
-          fetchCategory()
-        })
-        .catch((err) => {
-          console.log(err.message)
-          fetchCategory()
-        })
-      // fetchCategory()
-    } catch (error) {
-      // Handle error
-      console.error('Error submitting form:', error.message)
-    }
+  const handleEmployeeDelete = async (event, employeeID) => {
+    event.preventDefault()
   }
 
   return (
@@ -120,13 +93,13 @@ const CategoryTable = () => {
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Category</strong> <small></small>
+              <strong>Employee</strong> <small></small>
               <CButton
                 color="primary"
                 variant="outline"
                 size="sm"
                 className="float-sm-end"
-                onClick={() => handleCategoryAdd(true, 'add')}
+                onClick={() => handleEmployeeAdd(true, 'add')}
               >
                 <CIcon icon={cilPlus} customClassName="" /> Add
               </CButton>
@@ -136,29 +109,29 @@ const CategoryTable = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Category Name</CTableHeaderCell>
-                    {/* <CTableHeaderCell scope="col">Date</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Status</CTableHeaderCell> */}
+                    <CTableHeaderCell scope="col">Employee Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Date</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {categoryTableData.map((category, index) => (
+                  {employeeTableData.map((employee, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell scope="row">{index + 1}</CTableDataCell>
-                      <CTableDataCell>{category.name}</CTableDataCell>
-                      {/* <CTableDataCell>{category.CreatedDate}</CTableDataCell>
+                      <CTableDataCell>{employee.firstName + '' + employee.lastName}</CTableDataCell>
+                      <CTableDataCell>{employee.CreatedDate}</CTableDataCell>
                       <CTableDataCell>
                         <p>
                           <span
                             className={`badge rounded-pill text-bg-${
-                              category.Status === 1 ? 'success' : 'danger'
+                              employee.Status === 1 ? 'success' : 'danger'
                             }`}
                           >
-                            {category.Status === 1 ? 'Active' : 'Inactive'}
+                            {employee.Status === 1 ? 'Active' : 'Inactive'}
                           </span>
                         </p>
-                      </CTableDataCell> */}
+                      </CTableDataCell>
                       <CTableDataCell>
                         <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
                           <CButton
@@ -166,7 +139,7 @@ const CategoryTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleCategoryEdit(true, 'edit', category._id)}
+                            onClick={() => handleEmployeeEdit(true, 'edit', employee._id)}
                           >
                             <CIcon icon={cilPen} customClassName="" />
                           </CButton>
@@ -177,7 +150,7 @@ const CategoryTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleCategoryDelete(category._id)}
+                            onClick={() => handleEmployeeDelete(employee._id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />
                           </CButton>
@@ -191,15 +164,15 @@ const CategoryTable = () => {
           </CCard>
         </CCol>
       </CRow>
-      <CategoryModel
+      <EmployeeModel
         showModal={visible}
-        closeModel={() => closeMode()}
+        closeMOdel={() => setVisible(false)}
         dataModel={formType}
-        categoryID={categoryID}
-        categoryData={categoryTableDataByID}
+        employeeID={employeeID}
+        employeeData={employeeTableDataByID}
       />
     </>
   )
 }
 
-export default CategoryTable
+export default EmployeeTable

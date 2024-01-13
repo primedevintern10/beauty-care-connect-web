@@ -1,21 +1,21 @@
 import React from 'react'
 import { CButton, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 
-import AddCategoryForm from './AddCategory'
-import EditCategoryForm from './EditCategory'
+import AddServiceForm from './AddService'
+import EditServiceForm from './EditService'
 
-const CategoryModel = (modelProps) => {
+const ServiceModel = (modelProps) => {
   return (
     <>
       <CModal visible={modelProps.showModal} onClose={modelProps.closeModel}>
         <CModalHeader>
-          <CModalTitle>{modelProps.dataModel === 'add' ? 'Add' : 'Edit'} Category</CModalTitle>
+          <CModalTitle>{modelProps.dataModel === 'add' ? 'Add' : 'Edit'} Service</CModalTitle>
         </CModalHeader>
         <CModalBody>
           {modelProps.dataModel === 'add' ? (
-            <AddCategoryForm />
+            <AddServiceForm />
           ) : (
-            <EditCategoryForm CategoryData={modelProps.categoryData} />
+            <EditServiceForm ServiceData={modelProps.serviceData} />
           )}
         </CModalBody>
         <CModalFooter>
@@ -28,4 +28,4 @@ const CategoryModel = (modelProps) => {
   )
 }
 
-export default CategoryModel
+export default ServiceModel

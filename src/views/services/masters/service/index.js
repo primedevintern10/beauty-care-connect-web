@@ -1,7 +1,7 @@
 import React from 'react'
 // import AppointmentFilter from './AppointmentFilter'
 import ServiceTable from './ServiceTable'
-const Services = () => {
+const Service = () => {
   return (
     <>
       {/* <AppointmentFilter></AppointmentFilter> */}
@@ -10,4 +10,4 @@ const Services = () => {
   )
 }
 
-export default Services
+export default Service
