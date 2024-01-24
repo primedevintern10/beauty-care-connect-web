@@ -32,7 +32,7 @@ const CustomStyles = () => {
   //   },
   //   _id: serviceDataByID._id,
   // })
-  console.log(serviceDataByID)
+  // console.log(serviceDataByID)
   const queryParameters = new URLSearchParams(window.location.search)
   const serviceID = queryParameters.get('id')
 

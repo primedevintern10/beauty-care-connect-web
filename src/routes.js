@@ -1,5 +1,12 @@
 import React from 'react'
 
+// Company
+const Company = React.lazy(() => import('./views/administration/masters/company/index'))
+const AddCompany = React.lazy(() => import('./views/administration/masters/company/AddCompany'))
+const EditCompany = React.lazy(() => import('./views/administration/masters/company/EditCompany'))
+const ViewCompany = React.lazy(() => import('./views/administration/masters/company/ViewCompany'))
+
+// Dashboard
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
 // Appointment
@@ -47,6 +54,11 @@ const routes = [
   { path: '/appointment-add', name: 'Add Appointments', element: AddAppointments },
   { path: '/appointment-edit', name: 'Edit Appointments', element: EditAppointments },
   { path: '/appointment-view', name: 'View Appointments', element: ViewReview },
+
+  { path: '/company', name: 'Employee', element: Company },
+  { path: '/company-add', name: 'Add Employee', element: AddCompany },
+  { path: '/company-edit', name: 'Edit Employee', element: EditCompany },
+  { path: '/company-view', name: 'View Employee', element: ViewCompany },
 
   { path: '/review', name: 'Review', element: Review },
   { path: '/review-add', name: 'Add Review', element: AddReview },

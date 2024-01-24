@@ -227,6 +227,12 @@ const _nav = [
             to: '/employee',
             // icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
           },
+          {
+            component: CNavItem,
+            name: 'Company',
+            to: '/company',
+            // icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+          },
         ],
       },
     ],
