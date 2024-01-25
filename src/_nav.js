@@ -32,19 +32,19 @@ const _nav = [
     to: '#',
     icon: <CIcon icon={cilCalendarCheck} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavGroup,
-        name: 'Approval',
-        to: '#',
-        icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Transactions',
-            to: '#',
-          },
-        ],
-      },
+      // {
+      //   component: CNavGroup,
+      //   name: 'Approval',
+      //   to: '#',
+      //   icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
+      //   items: [
+      //     {
+      //       component: CNavItem,
+      //       name: 'Transactions',
+      //       to: '#',
+      //     },
+      //   ],
+      // },
       {
         component: CNavGroup,
         name: 'Transactions',
@@ -58,32 +58,32 @@ const _nav = [
           },
         ],
       },
-      {
-        component: CNavGroup,
-        name: 'Report',
-        to: '#',
-        icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Transactions',
-            to: '#',
-          },
-        ],
-      },
-      {
-        component: CNavGroup,
-        name: 'Masters',
-        to: '#',
-        icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Transactions',
-            to: '#',
-          },
-        ],
-      },
+      // {
+      //   component: CNavGroup,
+      //   name: 'Report',
+      //   to: '#',
+      //   icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+      //   items: [
+      //     {
+      //       component: CNavItem,
+      //       name: 'Transactions',
+      //       to: '#',
+      //     },
+      //   ],
+      // },
+      // {
+      //   component: CNavGroup,
+      //   name: 'Masters',
+      //   to: '#',
+      //   icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
+      //   items: [
+      //     {
+      //       component: CNavItem,
+      //       name: 'Transactions',
+      //       to: '#',
+      //     },
+      //   ],
+      // },
     ],
   },
   {
@@ -92,19 +92,19 @@ const _nav = [
     to: '#',
     icon: <CIcon icon={cilFindInPage} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavGroup,
-        name: 'Approval',
-        to: '#',
-        icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Transactions',
-            to: '#',
-          },
-        ],
-      },
+      // {
+      //   component: CNavGroup,
+      //   name: 'Approval',
+      //   to: '#',
+      //   icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
+      //   items: [
+      //     {
+      //       component: CNavItem,
+      //       name: 'Transactions',
+      //       to: '#',
+      //     },
+      //   ],
+      // },
       {
         component: CNavGroup,
         name: 'Transactions',
@@ -113,37 +113,37 @@ const _nav = [
         items: [
           {
             component: CNavItem,
-            name: 'Transactions',
+            name: 'Review',
             to: '/review',
           },
         ],
       },
-      {
-        component: CNavGroup,
-        name: 'Report',
-        to: '#',
-        icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Transactions',
-            to: '#',
-          },
-        ],
-      },
-      {
-        component: CNavGroup,
-        name: 'Masters',
-        to: '#',
-        icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Transactions',
-            to: '#',
-          },
-        ],
-      },
+      // {
+      //   component: CNavGroup,
+      //   name: 'Report',
+      //   to: '#',
+      //   icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+      //   items: [
+      //     {
+      //       component: CNavItem,
+      //       name: 'Transactions',
+      //       to: '#',
+      //     },
+      //   ],
+      // },
+      // {
+      //   component: CNavGroup,
+      //   name: 'Masters',
+      //   to: '#',
+      //   icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
+      //   items: [
+      //     {
+      //       component: CNavItem,
+      //       name: 'Transactions',
+      //       to: '#',
+      //     },
+      //   ],
+      // },
     ],
   },
   {

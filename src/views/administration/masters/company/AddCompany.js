@@ -1,160 +1,167 @@
 import React, { useState, useEffect } from 'react'
 import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
   CCol,
   CForm,
+  CFormCheck,
   CFormInput,
   CFormFeedback,
   CFormLabel,
-  CButton,
-  CNav,
-  CNavItem,
-  CNavLink,
-  CTabContent,
-  CTabPane,
+  CFormSelect,
+  CFormTextarea,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilCode, cilMediaPlay } from '@coreui/icons'
 import APIURL from 'src/components/ApiConfig'
 
+const Company = () => {
+  return (
+    <CRow>
+      <CCol md={4}>
+        <CFormLabel htmlFor="name">Company Name</CFormLabel>
+        <CFormInput type="text" id="name" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+      <CCol md={4}>
+        <CFormLabel htmlFor="registrationNo">Registration No</CFormLabel>
+        <CFormInput type="text" id="registrationNo" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+      <CCol md={4}>
+        <CFormLabel htmlFor="name">Owner Name</CFormLabel>
+        <CFormInput type="text" id="name" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+      <CCol md={4}>
+        <CFormLabel htmlFor="email">Email</CFormLabel>
+        <CFormInput type="text" id="email" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+
+      <CCol md={4}>
+        <CFormLabel htmlFor="webUrl">Web Url</CFormLabel>
+        <CFormInput type="text" id="webUrl" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+
+      <CCol md={4}>
+        <CFormLabel htmlFor="country">Country</CFormLabel>
+        <CFormInput type="text" id="country" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+
+      <CCol md={4}>
+        <CFormLabel htmlFor="currency">Currency</CFormLabel>
+        <CFormInput type="text" id="currency" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+    </CRow>
+  )
+}
+
+const Branch = () => {
+  return (
+    <CRow>
+      <CCol md={4}>
+        <CFormLabel htmlFor="name">Branch Name</CFormLabel>
+        <CFormInput type="text" id="name" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+      <CCol md={4}>
+        <CFormLabel htmlFor="contactNo">Contact No</CFormLabel>
+        <CFormInput type="text" id="contactNo" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+
+      <CCol md={4}>
+        <CFormLabel htmlFor="addressNo">Address</CFormLabel>
+        <CFormInput type="text" id="addressNo" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+
+      <CCol md={4}>
+        <CFormLabel htmlFor="street">Street</CFormLabel>
+        <CFormInput type="text" id="street" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+
+      <CCol md={4}>
+        <CFormLabel htmlFor="city">City</CFormLabel>
+        <CFormInput type="text" id="city" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+
+      <CCol md={4}>
+        <CFormLabel htmlFor="contactNo">Country</CFormLabel>
+        <CFormInput type="text" id="contactNo" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+
+      <CCol md={4}>
+        <CFormLabel htmlFor="postalCode">Postal Code</CFormLabel>
+        <CFormInput type="text" id="postalCode" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+      <CCol md={4}>
+        <CFormLabel htmlFor="email">Email</CFormLabel>
+        <CFormInput type="text" id="email" defaultValue="" required />
+        <CFormFeedback valid>Looks good!</CFormFeedback>
+      </CCol>
+    </CRow>
+  )
+}
+
 const AddCompanyForm = () => {
   const [validated, setValidated] = useState(false)
-
-  const [CompanyFormData, setCompanyFormData] = useState({
-    get_id: '',
-    name: '',
-  })
-
-  const handleCompanyFormChange = (e) => {
-    const { name, value } = e.target
-    setCompanyFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }))
-  }
-
-  const handleCompanyFormSubmit = async (event) => {
+  const handleSubmit = (event) => {
     const form = event.currentTarget
-
-    event.preventDefault()
-
     if (form.checkValidity() === false) {
+      event.preventDefault()
       event.stopPropagation()
-    } else {
-      try {
-        setValidated(true)
-        await fetch(APIURL + 'serviceCompany', {
-          method: 'POST',
-          body: JSON.stringify(CompanyFormData),
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data)
-          })
-          .catch((err) => {
-            console.log(err.message)
-          })
-      } catch (error) {
-        // Handle error
-        console.error('Error submitting form:', error.message)
-      }
     }
+    setValidated(true)
   }
-
-  const Company = () => {
-    return (
-      <CForm
-        className="row g-3 needs-validation"
-        noValidate
-        validated={validated}
-        onSubmit={handleCompanyFormSubmit}
-      >
-        <CCol md={12}>
-          <CFormLabel htmlFor="name">Company Name</CFormLabel>
-          <CFormInput
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Company Name"
-            required
-            value={CompanyFormData.name}
-            onChange={handleCompanyFormChange}
-          />
-          <CFormFeedback valid>Looks good!</CFormFeedback>
-        </CCol>
-        <CCol xs={12}>
-          <CButton color="primary" variant="outline" type="reset" className="me-1">
-            Clear
-          </CButton>
-          <CButton color="success" type="submit">
-            Save
-          </CButton>
-        </CCol>
-      </CForm>
-    )
-  }
-
-  const Branch = () => {
-    return (
-      <CForm
-        className="row g-3 needs-validation"
-        noValidate
-        validated={validated}
-        onSubmit={handleCompanyFormSubmit}
-      >
-        <CCol md={12}>
-          <CFormLabel htmlFor="name">Company Name</CFormLabel>
-          <CFormInput
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Company Name"
-            required
-            value={CompanyFormData.name}
-            onChange={handleCompanyFormChange}
-          />
-          <CFormFeedback valid>Looks good!</CFormFeedback>
-        </CCol>
-        <CCol xs={12}>
-          <CButton color="primary" variant="outline" type="reset" className="me-1">
-            Clear
-          </CButton>
-          <CButton color="success" type="submit">
-            Save
-          </CButton>
-        </CCol>
-      </CForm>
-    )
-  }
-
   return (
-    <div className="example">
-      <CNav variant="tabs">
-        <CNavItem>
-          <CNavLink href="#" active>
-            <CIcon icon={cilMediaPlay} className="me-2" />
-            Preview
-          </CNavLink>
-        </CNavItem>
-        <CNavItem>
-          <CNavLink href="#" target="_blank">
-            <CIcon icon={cilCode} className="me-2" />
-            Code
-          </CNavLink>
-        </CNavItem>
-      </CNav>
-      <CTabContent className="rounded-bottom">
-        <CTabPane className="p-3 preview" visible>
-          test
-        </CTabPane>
-        <CTabPane className="p-3 preview" visible>
-          test
-        </CTabPane>
-      </CTabContent>
-    </div>
+    <CRow>
+      <CForm
+        className="row g-3 needs-validation"
+        noValidate
+        validated={validated}
+        onSubmit={handleSubmit}
+      >
+        <CCol xs={12}>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>Company</strong> <small>Details</small>
+            </CCardHeader>
+            <CCardBody>{Company()}</CCardBody>
+          </CCard>
+        </CCol>
+
+        <CCol xs={12}>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>Branch</strong> <small>Details</small>
+            </CCardHeader>
+            <CCardBody>{Branch()}</CCardBody>
+          </CCard>
+        </CCol>
+        <CCol xs={12}>
+          <CButton color="primary" variant="outline" type="reset" className="me-1">
+            Clear
+          </CButton>
+          <CButton color="success" type="submit">
+            Save
+          </CButton>
+        </CCol>
+      </CForm>
+    </CRow>
   )
 }
 

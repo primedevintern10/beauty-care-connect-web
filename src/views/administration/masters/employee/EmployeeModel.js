@@ -9,7 +9,7 @@ const EmployeeModel = (modelProps) => {
     <>
       <CModal visible={modelProps.showModal} onClose={modelProps.closeMOdel}>
         <CModalHeader>
-          <CModalTitle>{modelProps.dataModel === 'add' ? 'Add' : 'Edit'} Category</CModalTitle>
+          <CModalTitle>{modelProps.dataModel === 'add' ? 'Add' : 'Edit'} Employee</CModalTitle>
         </CModalHeader>
         <CModalBody>
           {modelProps.dataModel === 'add' ? (

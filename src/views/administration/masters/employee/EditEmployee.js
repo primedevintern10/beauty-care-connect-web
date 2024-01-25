@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { CCol, CForm, CFormInput, CFormFeedback, CFormLabel, CButton } from '@coreui/react'
 import APIURL from 'src/components/ApiConfig'
 
-const EditCategoryForm = (employeeProps) => {
+const EditEmployeeForm = (employeeProps) => {
   const [validated, setValidated] = useState(false)
 
   const [employeeFormData, setEmployeeFormData] = useState({
@@ -141,4 +141,4 @@ const EditCategoryForm = (employeeProps) => {
   )
 }
 
-export default EditCategoryForm
+export default EditEmployeeForm
