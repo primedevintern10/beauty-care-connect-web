@@ -43,6 +43,40 @@ const Login = () => {
     }))
   }
 
+  const GetUserData = async (event) => {
+    await fetch(APIURL + 'auth/login', {
+      method: 'POST',
+      body: JSON.stringify(userFormData),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUserTost({
+          title: 'User Login',
+          message: 'Login Successful...!',
+          isAutoHide: true,
+          isVisible: true,
+          type: 's',
+        })
+        localStorage.setItem('accessToken', data.jwtToken)
+        localStorage.setItem('jwt-token', data.jwtToken)
+        localStorage.setItem('username', data.username)
+
+        window.location.href = '/dashboard'
+      })
+      .catch((err) => {
+        setUserTost({
+          title: 'User Login',
+          message: 'Login Unsuccessful...! Error : ' + err.message,
+          isAutoHide: true,
+          isVisible: true,
+          type: 'd',
+        })
+      })
+  }
+
   const HandleUserFormSubmit = async (event) => {
     const form = event.currentTarget
     event.preventDefault()
@@ -61,8 +95,6 @@ const Login = () => {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
-
             setUserTost({
               title: 'User Login',
               message: 'Login Successful...!',
@@ -73,11 +105,10 @@ const Login = () => {
             localStorage.setItem('accessToken', data.jwtToken)
             localStorage.setItem('jwt-token', data.jwtToken)
             localStorage.setItem('username', data.username)
+
             window.location.href = '/dashboard'
           })
           .catch((err) => {
-            console.log(err.message)
-
             setUserTost({
               title: 'User Login',
               message: 'Login Unsuccessful...! Error : ' + err.message,
@@ -88,7 +119,6 @@ const Login = () => {
           })
       } catch (error) {
         // Handle error
-        console.error('Error submitting form:', error.message)
         setUserTost({
           title: 'User Login',
           message: 'Login Unsuccessful...! Error : ' + error.message,

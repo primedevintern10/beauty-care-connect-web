@@ -17,20 +17,20 @@ import {
 } from '@coreui/react'
 import { cilPlus, cilPen, cilDelete } from '@coreui/icons'
 
-import EmployeeModel from './EmployeeModel'
+import UserModel from './UserModel'
 import APIURL from 'src/components/ApiConfig'
 
-const EmployeeTable = () => {
+const UserTable = () => {
   const [visible, setVisible] = useState(false)
   const [formType, setFormType] = useState('')
-  const [employeeTableData, setEmployeeTableData] = useState([])
-  const [employeeID, setEmployeeID] = useState('')
-  const [employeeTableDataByID, setEmployeeTableDataByID] = useState([])
+  const [UserTableData, setUserTableData] = useState([])
+  const [UserID, setUserID] = useState('')
+  const [UserTableDataByID, setUserTableDataByID] = useState([])
 
   useEffect(() => {
-    const fetchEmployee = async () => {
+    const fetchUser = async () => {
       try {
-        await fetch(APIURL + 'employee', {
+        await fetch(APIURL + 'user', {
           method: 'GET',
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -40,7 +40,7 @@ const EmployeeTable = () => {
           .then((response) => response.json())
           .then((data) => {
             console.log(data)
-            setEmployeeTableData(data)
+            setUserTableData(data)
           })
           .catch((err) => {
             console.log(err.message)
@@ -49,12 +49,12 @@ const EmployeeTable = () => {
         console.error('Error fetching data:', error)
       }
     }
-    fetchEmployee()
+    fetchUser()
   }, [])
 
-  const handleEmployeeEdit = async (isvisible, type, employeeID = null) => {
+  const handleUserEdit = async (isvisible, type, UserID = null) => {
     try {
-      await fetch(APIURL + 'user/' + employeeID, {
+      await fetch(APIURL + 'user/' + UserID, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -64,10 +64,10 @@ const EmployeeTable = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          setEmployeeTableDataByID(data)
+          setUserTableDataByID(data)
           setVisible(isvisible)
           setFormType(type)
-          setEmployeeID(employeeID)
+          setUserID(UserID)
         })
         .catch((err) => {
           console.log(err.message)
@@ -77,13 +77,13 @@ const EmployeeTable = () => {
     }
   }
 
-  const handleEmployeeAdd = (isvisible, type, employeeID = null) => {
+  const handleUserAdd = (isvisible, type, UserID = null) => {
     setVisible(isvisible)
     setFormType(type)
-    setEmployeeID(employeeID)
+    setUserID(UserID)
   }
 
-  const handleEmployeeDelete = async (event, employeeID) => {
+  const handleUserDelete = async (event, UserID) => {
     event.preventDefault()
   }
 
@@ -93,13 +93,13 @@ const EmployeeTable = () => {
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Employee</strong> <small></small>
+              <strong>User</strong> <small></small>
               <CButton
                 color="primary"
                 variant="outline"
                 size="sm"
                 className="float-sm-end"
-                onClick={() => handleEmployeeAdd(true, 'add')}
+                onClick={() => handleUserAdd(true, 'add')}
               >
                 <CIcon icon={cilPlus} customClassName="" /> Add
               </CButton>
@@ -109,26 +109,26 @@ const EmployeeTable = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Employee Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Contact No</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">User Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Date</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {employeeTableData.map((employee, index) => (
+                  {UserTableData.map((User, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell scope="row">{index + 1}</CTableDataCell>
-                      <CTableDataCell>{employee.name}</CTableDataCell>
-                      <CTableDataCell>{employee.contactNo}</CTableDataCell>
+                      <CTableDataCell>{User.firstName + '' + User.lastName}</CTableDataCell>
+                      <CTableDataCell>{User.CreatedDate}</CTableDataCell>
                       <CTableDataCell>
                         <p>
                           <span
                             className={`badge rounded-pill text-bg-${
-                              employee.isEnabled === true ? 'success' : 'danger'
+                              User.Status === 1 ? 'success' : 'danger'
                             }`}
                           >
-                            {employee.isEnabled === true ? 'Active' : 'Inactive'}
+                            {User.Status === 1 ? 'Active' : 'Inactive'}
                           </span>
                         </p>
                       </CTableDataCell>
@@ -139,7 +139,7 @@ const EmployeeTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleEmployeeEdit(true, 'edit', employee._id)}
+                            onClick={() => handleUserEdit(true, 'edit', User._id)}
                           >
                             <CIcon icon={cilPen} customClassName="" />
                           </CButton>
@@ -150,7 +150,7 @@ const EmployeeTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleEmployeeDelete(employee._id)}
+                            onClick={() => handleUserDelete(User._id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />
                           </CButton>
@@ -164,15 +164,15 @@ const EmployeeTable = () => {
           </CCard>
         </CCol>
       </CRow>
-      <EmployeeModel
+      <UserModel
         showModal={visible}
         closeMOdel={() => setVisible(false)}
         dataModel={formType}
-        employeeID={employeeID}
-        employeeData={employeeTableDataByID}
+        UserID={UserID}
+        UserData={UserTableDataByID}
       />
     </>
   )
 }
 
-export default EmployeeTable
+export default UserTable

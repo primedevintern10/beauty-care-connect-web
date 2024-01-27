@@ -47,6 +47,24 @@ const ViewEmployee = React.lazy(() =>
   import('./views/administration/masters/employee/ViewEmployee'),
 )
 
+// User Group
+const UserGroup = React.lazy(() => import('./views/administration/masters/usergroup/index'))
+const AddUserGroup = React.lazy(() =>
+  import('./views/administration/masters/usergroup/AddUserGroup'),
+)
+const EditUserGroup = React.lazy(() =>
+  import('./views/administration/masters/usergroup/EditUserGroup'),
+)
+const ViewUserGroup = React.lazy(() =>
+  import('./views/administration/masters/usergroup/ViewUserGroup'),
+)
+
+// User
+const User = React.lazy(() => import('./views/administration/masters/user/index'))
+const AddUser = React.lazy(() => import('./views/administration/masters/user/AddUser'))
+const EditUser = React.lazy(() => import('./views/administration/masters/user/EditUser'))
+const ViewUser = React.lazy(() => import('./views/administration/masters/user/ViewUser'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -79,6 +97,16 @@ const routes = [
   { path: '/employee-add', name: 'Add Employee', element: AddEmployee },
   { path: '/employee-edit', name: 'Edit Employee', element: EditEmployee },
   { path: '/employee-view', name: 'View Employee', element: ViewEmployee },
+
+  { path: '/usergroup', name: 'User Group', element: UserGroup },
+  { path: '/usergroup-add', name: 'Add User Group', element: AddUserGroup },
+  { path: '/usergroup-edit', name: 'Edit User Group', element: EditUserGroup },
+  { path: '/usergroup-view', name: 'View User Group', element: ViewUserGroup },
+
+  { path: '/user', name: 'User', element: User },
+  { path: '/user-add', name: 'Add User', element: AddUser },
+  { path: '/user-edit', name: 'Edit User', element: EditUser },
+  { path: '/user-view', name: 'View User', element: ViewUser },
 ]
 
 export default routes

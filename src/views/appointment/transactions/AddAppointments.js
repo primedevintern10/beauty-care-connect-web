@@ -17,7 +17,7 @@ import {
   CRow,
 } from '@coreui/react'
 
-const CustomStyles = () => {
+const Appointments = () => {
   const [validated, setValidated] = useState(false)
   const handleSubmit = (event) => {
     const form = event.currentTarget
@@ -94,19 +94,20 @@ const CustomStyles = () => {
   )
 }
 
-const Validation = () => {
+const AddAppointments = () => {
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Validation</strong> <small>Custom styles</small>
+            <strong>Appointments</strong>
+            {/* <small>Custom styles</small> */}
           </CCardHeader>
-          <CCardBody>{CustomStyles()}</CCardBody>
+          <CCardBody>{Appointments()}</CCardBody>
         </CCard>
       </CCol>
     </CRow>
   )
 }
 
-export default Validation
+export default AddAppointments

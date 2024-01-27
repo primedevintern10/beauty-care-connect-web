@@ -17,44 +17,19 @@ import {
 } from '@coreui/react'
 import { cilPlus, cilPen, cilDelete } from '@coreui/icons'
 
-import EmployeeModel from './EmployeeModel'
+import UserGroupModel from './UserGroupModel'
 import APIURL from 'src/components/ApiConfig'
 
-const EmployeeTable = () => {
+const UserGroupTable = () => {
   const [visible, setVisible] = useState(false)
   const [formType, setFormType] = useState('')
-  const [employeeTableData, setEmployeeTableData] = useState([])
-  const [employeeID, setEmployeeID] = useState('')
-  const [employeeTableDataByID, setEmployeeTableDataByID] = useState([])
+  const [userGroupTableData, setUserGroupTableData] = useState([])
+  const [userGroupID, setUserGroupID] = useState('')
+  const [userGroupTableDataByID, setUserGroupTableDataByID] = useState([])
 
-  useEffect(() => {
-    const fetchEmployee = async () => {
-      try {
-        await fetch(APIURL + 'employee', {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data)
-            setEmployeeTableData(data)
-          })
-          .catch((err) => {
-            console.log(err.message)
-          })
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
-    fetchEmployee()
-  }, [])
-
-  const handleEmployeeEdit = async (isvisible, type, employeeID = null) => {
+  const fetchUserGroup = async () => {
     try {
-      await fetch(APIURL + 'user/' + employeeID, {
+      await fetch(APIURL + 'userGroup', {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -63,11 +38,8 @@ const EmployeeTable = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
-          setEmployeeTableDataByID(data)
-          setVisible(isvisible)
-          setFormType(type)
-          setEmployeeID(employeeID)
+          // console.log(data)
+          setUserGroupTableData(data)
         })
         .catch((err) => {
           console.log(err.message)
@@ -77,14 +49,60 @@ const EmployeeTable = () => {
     }
   }
 
-  const handleEmployeeAdd = (isvisible, type, employeeID = null) => {
-    setVisible(isvisible)
-    setFormType(type)
-    setEmployeeID(employeeID)
+  useEffect(() => {
+    fetchUserGroup()
+  }, [])
+
+  const handleUserGroupEdit = async (isvisible, type, userGroupID = null) => {
+    try {
+      await fetch(APIURL + 'userGroup/' + userGroupID, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          setUserGroupTableDataByID(data)
+          setVisible(isvisible)
+          setFormType(type)
+          setUserGroupID(userGroupID)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
 
-  const handleEmployeeDelete = async (event, employeeID) => {
-    event.preventDefault()
+  const handleUserGroupAdd = (isvisible, type, userGroupID = null) => {
+    setVisible(isvisible)
+    setFormType(type)
+    setUserGroupID(userGroupID)
+  }
+
+  const handleUserGroupDelete = async (userGroupID) => {
+    try {
+      await fetch(APIURL + 'userGroup/' + userGroupID, {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
 
   return (
@@ -93,13 +111,13 @@ const EmployeeTable = () => {
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Employee</strong> <small></small>
+              <strong>User Group</strong> <small></small>
               <CButton
                 color="primary"
                 variant="outline"
                 size="sm"
                 className="float-sm-end"
-                onClick={() => handleEmployeeAdd(true, 'add')}
+                onClick={() => handleUserGroupAdd(true, 'add')}
               >
                 <CIcon icon={cilPlus} customClassName="" /> Add
               </CButton>
@@ -109,29 +127,17 @@ const EmployeeTable = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Employee Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Contact No</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">User Group</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Permission</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {employeeTableData.map((employee, index) => (
+                  {userGroupTableData.map((userGroup, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell scope="row">{index + 1}</CTableDataCell>
-                      <CTableDataCell>{employee.name}</CTableDataCell>
-                      <CTableDataCell>{employee.contactNo}</CTableDataCell>
-                      <CTableDataCell>
-                        <p>
-                          <span
-                            className={`badge rounded-pill text-bg-${
-                              employee.isEnabled === true ? 'success' : 'danger'
-                            }`}
-                          >
-                            {employee.isEnabled === true ? 'Active' : 'Inactive'}
-                          </span>
-                        </p>
-                      </CTableDataCell>
+                      <CTableDataCell>{userGroup.name}</CTableDataCell>
+                      <CTableDataCell>{userGroup.permission[0]}</CTableDataCell>
                       <CTableDataCell>
                         <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
                           <CButton
@@ -139,7 +145,7 @@ const EmployeeTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleEmployeeEdit(true, 'edit', employee._id)}
+                            onClick={() => handleUserGroupEdit(true, 'edit', userGroup._id)}
                           >
                             <CIcon icon={cilPen} customClassName="" />
                           </CButton>
@@ -150,7 +156,7 @@ const EmployeeTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleEmployeeDelete(employee._id)}
+                            onClick={() => handleUserGroupDelete(userGroup._id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />
                           </CButton>
@@ -164,15 +170,15 @@ const EmployeeTable = () => {
           </CCard>
         </CCol>
       </CRow>
-      <EmployeeModel
+      <UserGroupModel
         showModal={visible}
         closeMOdel={() => setVisible(false)}
         dataModel={formType}
-        employeeID={employeeID}
-        employeeData={employeeTableDataByID}
+        UserGroupID={userGroupID}
+        UserGroupData={userGroupTableDataByID}
       />
     </>
   )
 }
 
-export default EmployeeTable
+export default UserGroupTable

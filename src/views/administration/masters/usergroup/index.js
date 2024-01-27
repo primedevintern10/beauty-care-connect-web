@@ -1,13 +1,13 @@
 import React from 'react'
 // import AppointmentFilter from './AppointmentFilter'
-import EmployeeTable from './EmployeeTable'
-const Employee = () => {
+import UserGroupTable from './UserGroupTable'
+const Category = () => {
   return (
     <>
       {/* <AppointmentFilter></AppointmentFilter> */}
-      <EmployeeTable></EmployeeTable>
+      <UserGroupTable></UserGroupTable>
     </>
   )
 }
 
-export default Employee
+export default Category
