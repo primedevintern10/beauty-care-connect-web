@@ -4,14 +4,10 @@ import {
   cilSpeedometer,
   cilMemory,
   cilCalendarCheck,
-  cilBarChart,
   cilSwapHorizontal,
-  cilSpreadsheet,
   cilFindInPage,
   cilHandshake,
   cilSitemap,
-  cilCircle,
-  cilUser,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem } from '@coreui/react'
 
