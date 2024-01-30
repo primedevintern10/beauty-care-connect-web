@@ -1,13 +1,13 @@
 import React from 'react'
 
+// Dashboard
+const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+
 // Company
 const Company = React.lazy(() => import('./views/administration/masters/company/index'))
 const AddCompany = React.lazy(() => import('./views/administration/masters/company/AddCompany'))
 const EditCompany = React.lazy(() => import('./views/administration/masters/company/EditCompany'))
 const ViewCompany = React.lazy(() => import('./views/administration/masters/company/ViewCompany'))
-
-// Dashboard
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
 // Appointment
 const Appointment = React.lazy(() => import('./views/appointment/transactions/index'))
@@ -68,6 +68,7 @@ const ViewUser = React.lazy(() => import('./views/administration/masters/user/Vi
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+
   { path: '/appointment', name: 'Appointment', element: Appointment },
   { path: '/appointment-add', name: 'Add Appointments', element: AddAppointments },
   { path: '/appointment-edit', name: 'Edit Appointments', element: EditAppointments },

@@ -1,168 +1,125 @@
 import React, { useState, useEffect } from 'react'
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CForm,
-  CFormCheck,
-  CFormInput,
-  CFormFeedback,
-  CFormLabel,
-  CFormSelect,
-  CFormTextarea,
-  CInputGroup,
-  CInputGroupText,
-  CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilCode, cilMediaPlay } from '@coreui/icons'
+import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
+import { Box, Stepper, Step, StepButton, Button, Typography, StepLabel } from '@mui/material'
 import APIURL from 'src/components/ApiConfig'
 
-const Company = () => {
+import Company from './component/Company'
+import Branch from './component/Branch'
+import User from './component/User'
+
+const steps = ['Company Setup', 'Branch Setup', 'User Setup']
+
+const CompanySetup = () => {
+  const [activeStep, setActiveStep] = React.useState(0)
+  const [skipped, setSkipped] = React.useState(new Set())
+
+  const isStepOptional = (step) => {
+    return step === 1
+  }
+
+  const isStepSkipped = (step) => {
+    return skipped.has(step)
+  }
+
+  const handleNext = () => {
+    let newSkipped = skipped
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values())
+      newSkipped.delete(activeStep)
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    setSkipped(newSkipped)
+  }
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1)
+  }
+
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      // You probably want to guard against something like this,
+      // it should never occur unless someone's actively trying to break something.
+      throw new Error("You can't skip a step that isn't optional.")
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values())
+      newSkipped.add(activeStep)
+      return newSkipped
+    })
+  }
+
+  const handleReset = () => {
+    setActiveStep(0)
+  }
+
   return (
-    <CRow>
-      <CCol md={4}>
-        <CFormLabel htmlFor="name">Company Name</CFormLabel>
-        <CFormInput type="text" id="name" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-      <CCol md={4}>
-        <CFormLabel htmlFor="registrationNo">Registration No</CFormLabel>
-        <CFormInput type="text" id="registrationNo" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-      <CCol md={4}>
-        <CFormLabel htmlFor="name">Owner Name</CFormLabel>
-        <CFormInput type="text" id="name" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-      <CCol md={4}>
-        <CFormLabel htmlFor="email">Email</CFormLabel>
-        <CFormInput type="text" id="email" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
+    <Box sx={{ width: '100%' }}>
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => {
+          const stepProps = {}
+          const labelProps = {}
+          if (isStepOptional(index)) {
+            labelProps.optional = <Typography variant="caption">Optional</Typography>
+          }
+          if (isStepSkipped(index)) {
+            stepProps.completed = false
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          )
+        })}
+      </Stepper>
+      {activeStep === steps.length ? (
+        <React.Fragment>
+          <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button onClick={handleReset}>Reset</Button>
+          </Box>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <Typography sx={{ mt: 2, mb: 1 }}>
+            {activeStep === 0 ? <Company /> : activeStep === 1 ? <Branch /> : <User />}
+          </Typography>
+          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
+              Back
+            </Button>
+            <Box sx={{ flex: '1 1 auto' }} />
+            {isStepOptional(activeStep) && (
+              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                Skip
+              </Button>
+            )}
 
-      <CCol md={4}>
-        <CFormLabel htmlFor="webUrl">Web Url</CFormLabel>
-        <CFormInput type="text" id="webUrl" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-
-      <CCol md={4}>
-        <CFormLabel htmlFor="country">Country</CFormLabel>
-        <CFormInput type="text" id="country" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-
-      <CCol md={4}>
-        <CFormLabel htmlFor="currency">Currency</CFormLabel>
-        <CFormInput type="text" id="currency" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-    </CRow>
-  )
-}
-
-const Branch = () => {
-  return (
-    <CRow>
-      <CCol md={4}>
-        <CFormLabel htmlFor="name">Branch Name</CFormLabel>
-        <CFormInput type="text" id="name" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-      <CCol md={4}>
-        <CFormLabel htmlFor="contactNo">Contact No</CFormLabel>
-        <CFormInput type="text" id="contactNo" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-
-      <CCol md={4}>
-        <CFormLabel htmlFor="addressNo">Address</CFormLabel>
-        <CFormInput type="text" id="addressNo" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-
-      <CCol md={4}>
-        <CFormLabel htmlFor="street">Street</CFormLabel>
-        <CFormInput type="text" id="street" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-
-      <CCol md={4}>
-        <CFormLabel htmlFor="city">City</CFormLabel>
-        <CFormInput type="text" id="city" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-
-      <CCol md={4}>
-        <CFormLabel htmlFor="contactNo">Country</CFormLabel>
-        <CFormInput type="text" id="contactNo" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-
-      <CCol md={4}>
-        <CFormLabel htmlFor="postalCode">Postal Code</CFormLabel>
-        <CFormInput type="text" id="postalCode" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-      <CCol md={4}>
-        <CFormLabel htmlFor="email">Email</CFormLabel>
-        <CFormInput type="text" id="email" defaultValue="" required />
-        <CFormFeedback valid>Looks good!</CFormFeedback>
-      </CCol>
-    </CRow>
+            <Button onClick={handleNext}>
+              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+            </Button>
+          </Box>
+        </React.Fragment>
+      )}
+    </Box>
   )
 }
 
 const AddCompanyForm = () => {
-  const [validated, setValidated] = useState(false)
-  const handleSubmit = (event) => {
-    const form = event.currentTarget
-    if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
-    }
-    setValidated(true)
-  }
-
-  const steps = ['Select master blaster campaign settings', 'Create an ad group', 'Create an ad']
   return (
     <CRow>
-      <CForm
-        className="row g-3 needs-validation"
-        noValidate
-        validated={validated}
-        onSubmit={handleSubmit}
-      >
-        <CCol xs={12}>
-          <CCard className="mb-4">
-            <CCardHeader>
-              <strong>Company</strong> <small>Details</small>
-            </CCardHeader>
-            <CCardBody>{Company()}</CCardBody>
-          </CCard>
-        </CCol>
-
-        <CCol xs={12}>
-          <CCard className="mb-4">
-            <CCardHeader>
-              <strong>Branch</strong> <small>Details</small>
-            </CCardHeader>
-            <CCardBody>{Branch()}</CCardBody>
-          </CCard>
-        </CCol>
-        <CCol xs={12}>
-          <CButton color="primary" variant="outline" type="reset" className="me-1">
-            Clear
-          </CButton>
-          <CButton color="success" type="submit">
-            Save
-          </CButton>
-        </CCol>
-      </CForm>
+      <CCol xs={12}>
+        <CCard className="mb-4">
+          <CCardHeader>
+            <strong>Company</strong> <small>Setup</small>
+          </CCardHeader>
+          <CCardBody>{CompanySetup()}</CCardBody>
+        </CCard>
+      </CCol>
     </CRow>
   )
 }
