@@ -105,6 +105,7 @@ const Login = () => {
             localStorage.setItem('accessToken', data.jwtToken)
             localStorage.setItem('jwt-token', data.jwtToken)
             localStorage.setItem('username', data.username)
+            localStorage.setItem('userID', data._id)
 
             window.location.href = '/dashboard'
           })

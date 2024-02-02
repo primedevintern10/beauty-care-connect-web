@@ -250,7 +250,7 @@ const _nav = [
 */
 var _nav = []
 
-switch ('PUBLIC_USER') {
+switch ('ADMIN_USER') {
   case 'ADMIN_USER':
     _nav = [
       {
