@@ -29,7 +29,7 @@ const CompanyTable = () => {
 
   const fetchCompany = async () => {
     try {
-      await fetch(APIURL + 'serviceCompany', {
+      await fetch(APIURL + 'company', {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -60,7 +60,7 @@ const CompanyTable = () => {
 
   const handleCompanyEdit = async (isvisible, type, CompanyID = null) => {
     try {
-      await fetch(APIURL + 'serviceCompany/' + CompanyID, {
+      await fetch(APIURL + 'company/' + CompanyID, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
