@@ -24,7 +24,7 @@ const ServiceTable = () => {
 
   const fetchService = async () => {
     try {
-      await fetch(APIURL + 'service', {
+      await fetch(APIURL + 'service/branch/' + localStorage.getItem('branchID'), {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -79,8 +79,8 @@ const ServiceTable = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Service Code</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Customer Name</CTableHeaderCell>
+                    {/* <CTableHeaderCell scope="col">Service Code</CTableHeaderCell> */}
+                    <CTableHeaderCell scope="col">Service Name</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Category</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Req Time</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
@@ -91,7 +91,7 @@ const ServiceTable = () => {
                   {serviceTableData.map((service, index) => (
                     <CTableRow key={index}>
                       <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                      <CTableDataCell>{service._id}</CTableDataCell>
+                      {/* <CTableDataCell>{service._id}</CTableDataCell> */}
                       <CTableDataCell>{service.name}</CTableDataCell>
                       <CTableDataCell>{service.serviceCategory.name}</CTableDataCell>
                       <CTableDataCell>{service.requiredTime}</CTableDataCell>
@@ -114,13 +114,13 @@ const ServiceTable = () => {
                             </CButton>
                           </CPopover>
                         </CLink>
-                        <CLink href={'/service-view' + service._id} size="sm" className="me-1">
+                        {/* <CLink href={'/service-view' + service._id} size="sm" className="me-1">
                           <CPopover content="View" placement="top" trigger={['hover', 'focus']}>
                             <CButton color="info" variant="outline" size="sm">
                               <CIcon icon={cilFile} customClassName="" />
                             </CButton>
                           </CPopover>
-                        </CLink>
+                        </CLink> */}
                         <CLink href="/service-add" size="sm" className="me-1">
                           <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
                             <CButton color="danger" variant="outline" size="sm">

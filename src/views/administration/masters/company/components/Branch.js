@@ -24,7 +24,7 @@ import { cilPlus, cilPen, cilDelete } from '@coreui/icons'
 import APIURL from 'src/components/ApiConfig'
 import countries from 'src/components/data/countries'
 
-const Branch = () => {
+const Branch = (modelProps) => {
   const CompanyTableData = []
   const [validated, setValidated] = useState(false)
 
@@ -57,6 +57,8 @@ const Branch = () => {
     email: '',
   })
 
+  const [BranchData, setBranchData] = useState([])
+
   const handleBranchFormChange = (e) => {
     const { name, value } = e.target
     setBranchFormData((prevData) => ({
@@ -66,7 +68,7 @@ const Branch = () => {
   }
 
   const handleBranchSubmit = async (event) => {
-    setSendBranchFormData({
+    const BranchDetails = {
       _id: '',
       name: BranchFormData.name,
       contactNo: BranchFormData.contactNo,
@@ -81,7 +83,7 @@ const Branch = () => {
       company: {
         _id: localStorage.getItem('lastcompanyID'),
       },
-    })
+    }
 
     const form = event.currentTarget
     event.preventDefault()
@@ -93,7 +95,7 @@ const Branch = () => {
 
       await fetch(APIURL + 'branch', {
         method: 'POST',
-        body: JSON.stringify(SendBranchFormData),
+        body: JSON.stringify(BranchDetails),
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
@@ -109,6 +111,32 @@ const Branch = () => {
         })
     }
   }
+
+  const fetchBranch = async () => {
+    try {
+      await fetch(APIURL + 'branch/by-company/' + modelProps.CompanyData._id, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          setBranchData(data)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchBranch()
+  }, [])
 
   return (
     <>
@@ -250,17 +278,17 @@ const Branch = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Company Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Branch Name</CTableHeaderCell>
                     {/* <CTableHeaderCell scope="col">Date</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Status</CTableHeaderCell> */}
                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {CompanyTableData.map((Company, index) => (
+                  {BranchData.map((Branch, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell scope="row">{index + 1}</CTableDataCell>
-                      <CTableDataCell>{Company.name}</CTableDataCell>
+                      <CTableDataCell>{Branch.name}</CTableDataCell>
                       {/* <CTableDataCell>{Company.CreatedDate}</CTableDataCell>
                   <CTableDataCell>
                     <p>

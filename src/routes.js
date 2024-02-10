@@ -72,7 +72,7 @@ const routes = [
   { path: '/appointment', name: 'Appointment', element: Appointment },
   { path: '/appointment-add', name: 'Add Appointments', element: AddAppointments },
   { path: '/appointment-edit', name: 'Edit Appointments', element: EditAppointments },
-  { path: '/appointment-view', name: 'View Appointments', element: ViewReview },
+  { path: '/appointment-view', name: 'View Appointments', element: ViewAppointments },
 
   { path: '/company', name: 'Employee', element: Company },
   { path: '/company-add', name: 'Add Employee', element: AddCompany },
@@ -82,7 +82,7 @@ const routes = [
   { path: '/review', name: 'Review', element: Review },
   { path: '/review-add', name: 'Add Review', element: AddReview },
   { path: '/review-edit', name: 'Edit Review', element: EditReview },
-  { path: '/review-view', name: 'View Review', element: ViewAppointments },
+  { path: '/review-view', name: 'View Review', element: ViewReview },
 
   { path: '/service', name: 'Service', element: Service },
   { path: '/service-add', name: 'Add Service', element: AddService },

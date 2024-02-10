@@ -14,10 +14,33 @@ const DefaultLayout = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
           localStorage.setItem('userFName', data.firstName)
           localStorage.setItem('userLName', data.lastName)
           localStorage.setItem('userEmail', data.email)
+          localStorage.setItem('userGroupID', data.userGroup._id)
+          localStorage.setItem('userGroupName', data.userGroup.name)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
+  const fetchCompanyBranchData = async () => {
+    try {
+      await fetch(APIURL + 'employee/by-email/' + localStorage.getItem('userEmail'), {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          localStorage.setItem('branchID', data.branch[0]._id)
+          localStorage.setItem('CompanyID', data.branch[0].company._id)
         })
         .catch((err) => {
           console.log(err.message)
@@ -30,6 +53,7 @@ const DefaultLayout = () => {
   useEffect(() => {
     if (localStorage.getItem('accessToken') !== '' && localStorage.getItem('userID') !== '') {
       fetchUserByID()
+      fetchCompanyBranchData()
     }
   }, [])
 

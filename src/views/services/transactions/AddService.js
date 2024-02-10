@@ -26,9 +26,13 @@ const CustomStyles = () => {
     name: '',
     requiredTime: '',
     serviceCategory: {
-      get_id: '',
-      name: '',
+      _id: '',
     },
+    branch: [
+      {
+        _id: localStorage.getItem('branchID'),
+      },
+    ],
   })
 
   console.log(serviceFormData)
@@ -37,7 +41,7 @@ const CustomStyles = () => {
     const { value } = e.target
     setServiceFormData((prevData) => ({
       ...prevData,
-      isEnabled: value,
+      name: value,
     }))
   }
 
@@ -51,12 +55,10 @@ const CustomStyles = () => {
 
   const handleServiceCategoryChange = (e) => {
     const { id, value } = e.target
-    var sel = document.getElementById(id)
     setServiceFormData((prevData) => ({
       ...prevData,
       serviceCategory: {
-        get_id: value,
-        name: sel.options[sel.selectedIndex].text,
+        _id: value,
       },
     }))
   }

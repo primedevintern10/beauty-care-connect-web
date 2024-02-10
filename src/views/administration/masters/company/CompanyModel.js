@@ -13,9 +13,12 @@ const CompanyModel = (modelProps) => {
         </CModalHeader>
         <CModalBody>
           {modelProps.dataModel === 'add' ? (
-            <AddCompanyForm />
+            <AddCompanyForm CompanyData={null} dataModel={modelProps.dataModel} />
           ) : (
-            <EditCompanyForm CompanyData={modelProps.CompanyData} />
+            <EditCompanyForm
+              CompanyData={modelProps.CompanyData}
+              dataModel={modelProps.dataModel}
+            />
           )}
         </CModalBody>
         <CModalFooter>

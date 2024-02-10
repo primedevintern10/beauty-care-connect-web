@@ -14,18 +14,18 @@ import countries from 'src/components/data/countries'
 import currencies from 'src/components/data/currencies'
 
 const Company = (modelProps) => {
-  console.log('Company')
   console.log(modelProps)
   const [validated, setValidated] = useState(false)
 
   const [CompanayFormData, setCompanayFormData] = useState({
-    name: '',
-    registrationNo: '',
-    owner: '',
-    email: '',
-    webUrl: '',
-    country: '',
-    currency: '',
+    _id: modelProps.CompanyData ? modelProps.CompanyData._id : '',
+    name: modelProps.CompanyData ? modelProps.CompanyData.name : '',
+    registrationNo: modelProps.CompanyData ? modelProps.CompanyData.registrationNo : '',
+    owner: modelProps.CompanyData ? modelProps.CompanyData.owner : '',
+    email: modelProps.CompanyData ? modelProps.CompanyData.email : '',
+    webUrl: modelProps.CompanyData ? modelProps.CompanyData.webUrl : '',
+    country: modelProps.CompanyData ? modelProps.CompanyData.country : '',
+    currency: modelProps.CompanyData ? modelProps.CompanyData.currency : '',
   })
 
   const handleCompanyFormChange = (e) => {
@@ -64,12 +64,38 @@ const Company = (modelProps) => {
     }
   }
 
+  const handleCompanyEditFormSubmit = async (event) => {
+    const form = event.currentTarget
+    event.preventDefault()
+
+    if (form.checkValidity() === false) {
+      event.stopPropagation()
+    } else {
+      await fetch(APIURL + 'company/' + modelProps.CompanyData._id, {
+        method: 'PUT',
+        body: JSON.stringify(CompanayFormData),
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    }
+    setValidated(true)
+  }
+
   return (
     <CForm
       className="row g-3 needs-validation"
       noValidate
       validated={validated}
-      onSubmit={handleSubmit}
+      onSubmit={modelProps.dataModel === 'add' ? handleSubmit : handleCompanyEditFormSubmit}
     >
       <CRow className="mt-3">
         <CCol md={4}>

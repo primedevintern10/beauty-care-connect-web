@@ -65,7 +65,7 @@ const Login = () => {
         localStorage.setItem('username', data.username)
         localStorage.setItem('userID', data._id)
 
-        window.location.href = '/dashboard'
+        // window.location.href = '/dashboard'
       })
       .catch((err) => {
         setUserTost({

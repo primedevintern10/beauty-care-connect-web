@@ -17,7 +17,7 @@ import Company from './components/Company'
 import Branch from './components/Branch'
 import User from './components/User'
 
-const AddCompanyForm = () => {
+const AddCompanyForm = (modelProps) => {
   return (
     <CRow>
       <CCol xs={12}>
@@ -25,19 +25,19 @@ const AddCompanyForm = () => {
           <CCardHeader>
             <strong>Company</strong> <small>Setup</small>
           </CCardHeader>
-          <CCardBody>{Company()}</CCardBody>
+          <CCardBody>{Company(modelProps)}</CCardBody>
         </CCard>
         <CCard className="mb-4">
           <CCardHeader>
             <strong>Branch</strong> <small>Setup</small>
           </CCardHeader>
-          <CCardBody>{Branch()}</CCardBody>
+          <CCardBody>{Branch(modelProps)}</CCardBody>
         </CCard>
         <CCard className="mb-4">
           <CCardHeader>
             <strong>User</strong> <small>Setup</small>
           </CCardHeader>
-          <CCardBody>{User()}</CCardBody>
+          <CCardBody>{User(modelProps)}</CCardBody>
         </CCard>
       </CCol>
     </CRow>
