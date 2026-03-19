@@ -20,9 +20,8 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilPlus, cilPen, cilDelete } from '@coreui/icons'
+import { cilPen, cilDelete } from '@coreui/icons'
 import APIURL from 'src/components/ApiConfig'
-import countries from 'src/components/data/countries'
 
 const Branch = (modelProps) => {
   const CompanyTableData = []
@@ -134,6 +133,7 @@ const Branch = (modelProps) => {
     }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchBranch()
   }, [])

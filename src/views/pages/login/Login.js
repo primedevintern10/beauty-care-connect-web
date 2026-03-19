@@ -43,39 +43,6 @@ const Login = () => {
     }))
   }
 
-  const GetUserData = async (event) => {
-    await fetch(APIURL + 'auth/login', {
-      method: 'POST',
-      body: JSON.stringify(userFormData),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setUserTost({
-          title: 'User Login',
-          message: 'Login Successful...!',
-          isAutoHide: true,
-          isVisible: true,
-          type: 's',
-        })
-        localStorage.setItem('accessToken', data.jwtToken)
-        localStorage.setItem('jwt-token', data.jwtToken)
-        localStorage.setItem('username', data.username)
-        localStorage.setItem('userID', data._id)
-
-        // window.location.href = '/dashboard'
-      })
-      .catch((err) => {
-        setUserTost({
-          title: 'User Login',
-          message: 'Login Unsuccessful...! Error : ' + err.message,
-          isAutoHide: true,
-          isVisible: true,
-          type: 'd',
-        })
-      })
   }
 
   const HandleUserFormSubmit = async (event) => {

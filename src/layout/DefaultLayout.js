@@ -73,7 +73,7 @@ const DefaultLayout = () => {
     }
 
     bootstrapUserContext()
-  }, [])
+  }, [token, userId])
 
   if (token && userId) {
     return (

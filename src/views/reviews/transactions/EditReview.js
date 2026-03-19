@@ -11,9 +11,6 @@ import {
   CFormFeedback,
   CFormLabel,
   CFormSelect,
-  CFormTextarea,
-  CInputGroup,
-  CInputGroupText,
   CRow,
 } from '@coreui/react'
 

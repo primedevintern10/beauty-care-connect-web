@@ -3,7 +3,6 @@ import {
   CCard,
   CCardBody,
   CCardText,
-  CCardTitle,
   CCol,
   CRow,
   CCardHeader,
@@ -57,6 +56,8 @@ const ViewAppointments = () => {
     }
   }
 
+  useEffect(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchAppointment()
     fetchAppointmentStatus()
