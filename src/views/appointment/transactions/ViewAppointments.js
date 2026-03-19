@@ -63,7 +63,6 @@ const ViewAppointments = () => {
   }, [])
 
   const updateAppointment = async (event) => {
-    const form = event.currentTarget
     event.preventDefault()
     try {
       const response = await fetch(APIURL + 'appointment/' + appointmentID, {

@@ -44,37 +44,6 @@ const User = (modelProps) => {
     branch: '',
   })
 
-  const [UserFormData, setUserFormData] = useState({
-    _id: '',
-    firstName: '',
-    lastName: '',
-    username: '',
-    nicPassport: '',
-    email: '',
-    contactNo: '',
-    password: '',
-    userGroup: {
-      _id: '',
-    },
-    enabled: false,
-  })
-
-  const [EmployeeFormData, setEmployeeFormData] = useState({
-    _id: '',
-    nic: '',
-    name: '',
-    nickName: '',
-    email: '',
-    contactNo: '',
-    isEnabled: true,
-    type: '',
-    branch: [
-      {
-        _id: '',
-      },
-    ],
-  })
-
   const handleUserFormChange = (e) => {
     const { name, value } = e.target
     setUserData((prevData) => ({

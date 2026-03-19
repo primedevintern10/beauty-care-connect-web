@@ -73,6 +73,7 @@ const DefaultLayout = () => {
     }
 
     bootstrapUserContext()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, userId])
 
   if (token && userId) {
