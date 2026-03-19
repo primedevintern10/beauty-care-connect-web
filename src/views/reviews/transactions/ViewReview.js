@@ -1,19 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
-  CButton,
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
-  CForm,
-  CFormCheck,
-  CFormInput,
-  CFormFeedback,
-  CFormLabel,
-  CFormSelect,
-  CFormTextarea,
-  CInputGroup,
-  CInputGroupText,
   CRow,
 } from '@coreui/react'
 

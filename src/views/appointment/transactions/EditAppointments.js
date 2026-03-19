@@ -116,7 +116,7 @@ const EditAppointmentForm = () => {
     if (appointmentID) {
       fetchAppointment()
     }
-  }, [])
+  }, [appointmentID])
 
   const handleClientChange = (e) => {
     setAppointmentFormData((prevData) => ({

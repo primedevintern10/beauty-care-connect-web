@@ -145,7 +145,7 @@ const CustomStyles = () => {
   useEffect(() => {
     fetchService()
     fetchCategory()
-  }, [])
+  }, [serviceID])
 
   return (
     <CForm

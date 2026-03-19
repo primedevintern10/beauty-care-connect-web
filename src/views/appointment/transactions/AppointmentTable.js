@@ -16,7 +16,7 @@ import {
   CLink,
   CPopover,
 } from '@coreui/react'
-import { cilPen, cilFile, cilDelete, cilPlus } from '@coreui/icons'
+import { cilPen, cilDelete, cilPlus } from '@coreui/icons'
 import APIURL from 'src/components/ApiConfig'
 
 const AppointmentTable = () => {

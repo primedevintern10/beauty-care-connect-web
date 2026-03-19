@@ -5,7 +5,6 @@ import {
   cilMemory,
   cilCalendarCheck,
   cilSwapHorizontal,
-  cilFindInPage,
   cilHandshake,
   cilSitemap,
 } from '@coreui/icons'

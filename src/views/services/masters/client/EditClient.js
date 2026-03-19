@@ -54,7 +54,7 @@ const EditClientForm = () => {
     if (clientID) {
       fetchClient()
     }
-  }, [])
+  }, [clientID, fetchClient])
 
   const handleFirstNameChange = (e) => {
     setClientFormData((prevData) => ({
