@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { CCol, CRow } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cibCcAmex, cibCcApplePay, cibCcMastercard, cibCcPaypal, cibCcStripe, cibCcVisa, cibGoogle, cibFacebook, cibLinkedin, cibTwitter, cifBr, cifEs, cifFr, cifIn, cifPl, cifUs, cilUser, cilUserFemale } from '@coreui/icons'
