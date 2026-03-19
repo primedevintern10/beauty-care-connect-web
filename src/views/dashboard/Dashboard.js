@@ -16,6 +16,12 @@ import {
   cibFacebook,
   cibLinkedin,
   cibTwitter,
+  cifBr,
+  cifEs,
+  cifFr,
+  cifIn,
+  cifPl,
+  cifUs,
   cilUser,
   cilUserFemale,
 } from '@coreui/icons'

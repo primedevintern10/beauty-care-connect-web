@@ -8,9 +8,10 @@ import {
   CHeaderNav,
   CHeaderToggler,
   CNavItem,
+  CNavLink,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilMenu } from '@coreui/icons'
+import { cilMenu, cilBell } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
