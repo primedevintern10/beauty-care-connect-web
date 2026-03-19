@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CRow,
-} from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
 import Company from './components/Company'
 import Branch from './components/Branch'
 import User from './components/User'

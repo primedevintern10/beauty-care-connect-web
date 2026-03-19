@@ -1,30 +1,8 @@
 import React from 'react'
 
-import {
-  CCol,
-  CRow,
-} from '@coreui/react'
+import { CCol, CRow } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cibTwitter,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
+import { cibCcAmex, cibCcApplePay, cibCcMastercard, cibCcPaypal, cibCcStripe, cibCcVisa, cibGoogle, cibFacebook, cibLinkedin, cibTwitter, cifBr, cifEs, cifFr, cifIn, cifPl, cifUs, cilUser, cilUserFemale } from '@coreui/icons'
 
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
