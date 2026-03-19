@@ -37,6 +37,12 @@ const AddCategory = React.lazy(() => import('./views/services/masters/category/A
 const EditCategory = React.lazy(() => import('./views/services/masters/category/EditCategory'))
 const ViewCategory = React.lazy(() => import('./views/services/masters/category/ViewCategory'))
 
+// Client
+const Client = React.lazy(() => import('./views/services/masters/client/index'))
+const AddClient = React.lazy(() => import('./views/services/masters/client/AddClient'))
+const EditClient = React.lazy(() => import('./views/services/masters/client/EditClient'))
+const ViewClient = React.lazy(() => import('./views/services/masters/client/ViewClient'))
+
 // Employee
 const Employee = React.lazy(() => import('./views/administration/masters/employee/index'))
 const AddEmployee = React.lazy(() => import('./views/administration/masters/employee/AddEmployee'))
@@ -93,6 +99,11 @@ const routes = [
   { path: '/category-add', name: 'Add Category', element: AddCategory },
   { path: '/category-edit', name: 'Edit Category', element: EditCategory },
   { path: '/category-view', name: 'View Category', element: ViewCategory },
+
+  { path: '/client', name: 'Client', element: Client },
+  { path: '/client-add', name: 'Add Client', element: AddClient },
+  { path: '/client-edit', name: 'Edit Client', element: EditClient },
+  { path: '/client-view', name: 'View Client', element: ViewClient },
 
   { path: '/employee', name: 'Employee', element: Employee },
   { path: '/employee-add', name: 'Add Employee', element: AddEmployee },

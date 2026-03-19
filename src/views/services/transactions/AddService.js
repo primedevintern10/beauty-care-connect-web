@@ -6,14 +6,10 @@ import {
   CCardHeader,
   CCol,
   CForm,
-  CFormCheck,
   CFormInput,
   CFormFeedback,
   CFormLabel,
   CFormSelect,
-  CFormTextarea,
-  CInputGroup,
-  CInputGroupText,
   CRow,
 } from '@coreui/react'
 import APIURL from 'src/components/ApiConfig'
@@ -28,11 +24,6 @@ const CustomStyles = () => {
     serviceCategory: {
       _id: '',
     },
-    branch: [
-      {
-        _id: localStorage.getItem('branchID'),
-      },
-    ],
   })
 
   console.log(serviceFormData)
@@ -54,7 +45,7 @@ const CustomStyles = () => {
   }
 
   const handleServiceCategoryChange = (e) => {
-    const { id, value } = e.target
+    const { value } = e.target
     setServiceFormData((prevData) => ({
       ...prevData,
       serviceCategory: {
@@ -64,11 +55,11 @@ const CustomStyles = () => {
   }
 
   const handleServiceActiveChange = (e) => {
-    const { id, value } = e.target
+    const { value } = e.target
 
     setServiceFormData((prevData) => ({
       ...prevData,
-      isEnabled: value,
+      isEnabled: value === 'true',
     }))
   }
 
@@ -80,9 +71,15 @@ const CustomStyles = () => {
     } else {
       try {
         setValidated(true)
+        const branchID = localStorage.getItem('branchID')
+        const payload = {
+          ...serviceFormData,
+          branch: branchID ? [{ _id: branchID }] : [],
+        }
+
         await fetch(APIURL + 'service', {
           method: 'POST',
-          body: JSON.stringify(serviceFormData),
+          body: JSON.stringify(payload),
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
@@ -91,6 +88,7 @@ const CustomStyles = () => {
           .then((response) => response.json())
           .then((data) => {
             console.log(data)
+            window.location.href = '/service'
           })
           .catch((err) => {
             console.log(err.message)
@@ -166,8 +164,9 @@ const CustomStyles = () => {
           id="serviceCategory"
           name="serviceCategory"
           onChange={handleServiceCategoryChange}
+          required
         >
-          <option disabled selected>
+          <option value="" disabled>
             Choose...
           </option>
           {categories.map((category, index) => (
@@ -181,8 +180,8 @@ const CustomStyles = () => {
       <CCol md={3}>
         <CFormLabel htmlFor="requiredTime">Status</CFormLabel>
         <CFormSelect id="requiredTime" name="requiredTime" onChange={handleServiceActiveChange}>
-          <option value="1">Active</option>
-          <option value="0">Inactive</option>
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
         </CFormSelect>
         <CFormFeedback invalid>Please provide a valid city.</CFormFeedback>
       </CCol>

@@ -6,43 +6,88 @@ import {
   CCardHeader,
   CCol,
   CForm,
-  CFormCheck,
   CFormInput,
   CFormFeedback,
   CFormLabel,
   CFormSelect,
-  CFormTextarea,
-  CInputGroup,
-  CInputGroupText,
   CRow,
 } from '@coreui/react'
 import APIURL from 'src/components/ApiConfig'
 
 const CustomStyles = () => {
-  const [serviceDataByID, setServiceDataByID] = useState([])
   const [categories, setCategories] = useState([])
   const [validated, setValidated] = useState(false)
-  // const [serviceFormData, setServiceFormData] = useState({
-  //   isEnabled: serviceDataByID.isEnabled,
-  //   name: serviceDataByID.name,
-  //   requiredTime: serviceDataByID.requiredTime,
-  //   serviceCategory: {
-  //     name: serviceDataByID.serviceCategory.name,
-  //     _id: serviceDataByID.serviceCategory._id,
-  //   },
-  //   _id: serviceDataByID._id,
-  // })
-  // console.log(serviceDataByID)
+  const [serviceFormData, setServiceFormData] = useState({
+    _id: '',
+    isEnabled: true,
+    name: '',
+    requiredTime: '',
+    serviceCategory: {
+      _id: '',
+    },
+    branch: [],
+  })
+
   const queryParameters = new URLSearchParams(window.location.search)
   const serviceID = queryParameters.get('id')
 
-  const handleSubmit = (event) => {
+  const handleServiceNameChange = (e) => {
+    setServiceFormData((prevData) => ({
+      ...prevData,
+      name: e.target.value,
+    }))
+  }
+
+  const handleServiceTimeChange = (e) => {
+    setServiceFormData((prevData) => ({
+      ...prevData,
+      requiredTime: e.target.value,
+    }))
+  }
+
+  const handleServiceCategoryChange = (e) => {
+    setServiceFormData((prevData) => ({
+      ...prevData,
+      serviceCategory: {
+        _id: e.target.value,
+      },
+    }))
+  }
+
+  const handleServiceActiveChange = (e) => {
+    setServiceFormData((prevData) => ({
+      ...prevData,
+      isEnabled: e.target.value === 'true',
+    }))
+  }
+
+  const handleSubmit = async (event) => {
     const form = event.currentTarget
+    event.preventDefault()
+
     if (form.checkValidity() === false) {
-      event.preventDefault()
       event.stopPropagation()
+      return
     }
+
     setValidated(true)
+
+    try {
+      const response = await fetch(APIURL + 'service/' + serviceID, {
+        method: 'PUT',
+        body: JSON.stringify(serviceFormData),
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+
+      if (response.ok) {
+        window.location.href = '/service'
+      }
+    } catch (error) {
+      console.error('Error updating service:', error.message)
+    }
   }
 
   const fetchService = async () => {
@@ -56,8 +101,16 @@ const CustomStyles = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
-          setServiceDataByID(data)
+          setServiceFormData({
+            _id: data._id,
+            isEnabled: data.isEnabled === true,
+            name: data.name || '',
+            requiredTime: data.requiredTime || '',
+            serviceCategory: {
+              _id: data.serviceCategory?._id || '',
+            },
+            branch: Array.isArray(data.branch) ? data.branch : [],
+          })
         })
         .catch((err) => {
           console.log(err.message)
@@ -108,7 +161,8 @@ const CustomStyles = () => {
           id="name"
           name="name"
           placeholder="Service Name"
-          value={serviceDataByID.name}
+          value={serviceFormData.name}
+          onChange={handleServiceNameChange}
           required
         />
         <CFormFeedback valid>Looks good!</CFormFeedback>
@@ -119,75 +173,43 @@ const CustomStyles = () => {
           type="text"
           id="requiredTime"
           name="requiredTime"
-          defaultValue="Otto"
           required
           placeholder="Required Time"
-          value={serviceDataByID.requiredTime}
+          value={serviceFormData.requiredTime}
+          onChange={handleServiceTimeChange}
         />
         <CFormFeedback valid>Looks good!</CFormFeedback>
       </CCol>
-      {/* <CCol md={4}>
-        <CFormLabel htmlFor="validationCustomUsername">Username</CFormLabel>
-        <CInputGroup className="has-validation">
-          <CInputGroupText id="inputGroupPrepend">@</CInputGroupText>
-          <CFormInput
-            type="text"
-            id="validationCustomUsername"
-            defaultValue=""
-            aria-describedby="inputGroupPrepend"
-            required
-          />
-          <CFormFeedback invalid>Please choose a username.</CFormFeedback>
-        </CInputGroup>
-      </CCol> */}
-      {/* <CCol md={6}>
-        <CFormLabel htmlFor="validationCustom03">City</CFormLabel>
-        <CFormInput type="text" id="validationCustom03" required />
-        <CFormFeedback invalid>Please provide a valid city.</CFormFeedback>
-      </CCol> */}
       <CCol md={3}>
         <CFormLabel htmlFor="serviceCategory">Service Category</CFormLabel>
-        <CFormSelect id="serviceCategory" name="serviceCategory">
-          <option disabled>Choose...</option>
-          {categories.map(
-            (category, index) => (
-              <option
-                key={index}
-                value={category._id}
-                data-value={category.name}
-                // selected={serviceDataByID.serviceCategory._id === category._id ? true : false}
-              >
-                {category.name}
-              </option>
-            ),
-            // <option key={index} value={category._id} data-value={category.name}>
-            //   {category.name}
-            // </option>
-          )}
+        <CFormSelect
+          id="serviceCategory"
+          name="serviceCategory"
+          value={serviceFormData.serviceCategory._id}
+          onChange={handleServiceCategoryChange}
+          required
+        >
+          <option value="" disabled>
+            Choose...
+          </option>
+          {categories.map((category, index) => (
+            <option key={index} value={category._id} data-value={category.name}>
+              {category.name}
+            </option>
+          ))}
         </CFormSelect>
         <CFormFeedback invalid>Please provide a valid city.</CFormFeedback>
       </CCol>
       <CCol md={3}>
         <CFormLabel htmlFor="requiredTime">Status</CFormLabel>
-        <CFormSelect id="requiredTime" name="requiredTime">
-          {serviceDataByID.isEnabled === true ? (
-            <>
-              <option value="true" selected>
-                Active
-              </option>
-              <option value="false">Inactive</option>
-            </>
-          ) : (
-            <>
-              <option value="true">Active</option>
-              <option value="false" selected>
-                Inactive
-              </option>
-            </>
-          )}
-
-          {/* <option value="true" selected>Active</option>
-          <option value="false" selected>Inactive</option> */}
+        <CFormSelect
+          id="requiredTime"
+          name="requiredTime"
+          value={String(serviceFormData.isEnabled)}
+          onChange={handleServiceActiveChange}
+        >
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
         </CFormSelect>
         <CFormFeedback invalid>Please provide a valid city.</CFormFeedback>
       </CCol>

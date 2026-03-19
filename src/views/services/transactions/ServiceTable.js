@@ -16,7 +16,7 @@ import {
   CLink,
   CPopover,
 } from '@coreui/react'
-import { cilPlus, cilPen, cilFile, cilDelete } from '@coreui/icons'
+import { cilPlus, cilPen, cilDelete } from '@coreui/icons'
 import APIURL from 'src/components/ApiConfig'
 
 const ServiceTable = () => {
@@ -24,7 +24,10 @@ const ServiceTable = () => {
 
   const fetchService = async () => {
     try {
-      await fetch(APIURL + 'service/branch/' + localStorage.getItem('branchID'), {
+      const branchID = localStorage.getItem('branchID')
+      const endpoint = branchID ? 'service/branch/' + branchID : 'service'
+
+      await fetch(APIURL + endpoint, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
@@ -41,6 +44,24 @@ const ServiceTable = () => {
         })
     } catch (error) {
       console.error('Error fetching data:', error)
+    }
+  }
+
+  const handleServiceDelete = async (serviceId) => {
+    try {
+      const response = await fetch(APIURL + 'service/' + serviceId, {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+
+      if (response.ok) {
+        fetchService()
+      }
+    } catch (error) {
+      console.error('Error deleting service:', error)
     }
   }
 
@@ -93,7 +114,7 @@ const ServiceTable = () => {
                       <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                       {/* <CTableDataCell>{service._id}</CTableDataCell> */}
                       <CTableDataCell>{service.name}</CTableDataCell>
-                      <CTableDataCell>{service.serviceCategory.name}</CTableDataCell>
+                      <CTableDataCell>{service.serviceCategory?.name || '-'}</CTableDataCell>
                       <CTableDataCell>{service.requiredTime}</CTableDataCell>
                       <CTableDataCell>
                         <p>
@@ -121,13 +142,16 @@ const ServiceTable = () => {
                             </CButton>
                           </CPopover>
                         </CLink> */}
-                        <CLink href="/service-add" size="sm" className="me-1">
-                          <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
-                            <CButton color="danger" variant="outline" size="sm">
-                              <CIcon icon={cilDelete} customClassName="" />
-                            </CButton>
-                          </CPopover>
-                        </CLink>
+                        <CPopover content="Delete" placement="top" trigger={['hover', 'focus']}>
+                          <CButton
+                            color="danger"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleServiceDelete(service._id)}
+                          >
+                            <CIcon icon={cilDelete} customClassName="" />
+                          </CButton>
+                        </CPopover>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

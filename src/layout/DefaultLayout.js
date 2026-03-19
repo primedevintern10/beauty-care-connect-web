@@ -1,63 +1,81 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
 import APIURL from 'src/components/ApiConfig'
 
 const DefaultLayout = () => {
+  const token = localStorage.getItem('accessToken')
+  const userId = localStorage.getItem('userID')
+
   const fetchUserByID = async () => {
     try {
-      await fetch(APIURL + 'user/' + localStorage.getItem('userID'), {
+      const response = await fetch(APIURL + 'user/' + userId, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + token,
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
-        .then((data) => {
-          localStorage.setItem('userFName', data.firstName)
-          localStorage.setItem('userLName', data.lastName)
-          localStorage.setItem('userEmail', data.email)
-          localStorage.setItem('userGroupID', data.userGroup._id)
-          localStorage.setItem('userGroupName', data.userGroup.name)
-        })
-        .catch((err) => {
-          console.log(err.message)
-        })
+
+      if (!response.ok) {
+        return null
+      }
+
+      const data = await response.json()
+      localStorage.setItem('userFName', data.firstName || '')
+      localStorage.setItem('userLName', data.lastName || '')
+      localStorage.setItem('userEmail', data.email || '')
+      localStorage.setItem('userGroupID', data.userGroup?._id || '')
+      localStorage.setItem('userGroupName', data.userGroup?.name || '')
+
+      return data
     } catch (error) {
       console.error('Error fetching data:', error)
+      return null
     }
   }
 
-  const fetchCompanyBranchData = async () => {
+  const fetchCompanyBranchData = async (email) => {
+    if (!email) {
+      return
+    }
+
     try {
-      await fetch(APIURL + 'employee/by-email/' + localStorage.getItem('userEmail'), {
+      const response = await fetch(APIURL + 'employee/by-email/' + email, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + token,
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
-        .then((data) => {
-          localStorage.setItem('branchID', data.branch[0]._id)
-          localStorage.setItem('CompanyID', data.branch[0].company._id)
-        })
-        .catch((err) => {
-          console.log(err.message)
-        })
+
+      if (!response.ok) {
+        return
+      }
+
+      const data = await response.json()
+      if (data?.branch?.length > 0) {
+        localStorage.setItem('branchID', data.branch[0]?._id || '')
+        localStorage.setItem('CompanyID', data.branch[0]?.company?._id || '')
+      }
     } catch (error) {
       console.error('Error fetching data:', error)
     }
   }
 
   useEffect(() => {
-    if (localStorage.getItem('accessToken') !== '' && localStorage.getItem('userID') !== '') {
-      fetchUserByID()
-      fetchCompanyBranchData()
+    const bootstrapUserContext = async () => {
+      if (!token || !userId) {
+        return
+      }
+
+      const user = await fetchUserByID()
+      await fetchCompanyBranchData(user?.email)
     }
+
+    bootstrapUserContext()
   }, [])
 
-  if (localStorage.getItem('accessToken') !== '' && localStorage.getItem('userID') !== '') {
+  if (token && userId) {
     return (
       <div>
         <AppSidebar />
@@ -71,7 +89,7 @@ const DefaultLayout = () => {
       </div>
     )
   } else {
-    window.location.href = '/dashboard'
+    window.location.href = '/login'
   }
 }
 
