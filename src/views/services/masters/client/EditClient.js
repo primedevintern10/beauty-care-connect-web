@@ -27,34 +27,33 @@ const EditClientForm = () => {
   const queryParameters = new URLSearchParams(window.location.search)
   const clientID = queryParameters.get('id')
 
-  const fetchClient = async () => {
-    try {
-      const response = await fetch(APIURL + 'client/' + clientID, {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      })
-      const data = await response.json()
-      setClientFormData({
-        _id: data._id || '',
-        firstName: data.firstName || '',
-        lastName: data.lastName || '',
-        phoneNumber: data.phoneNumber || '',
-        email: data.email || '',
-        address: data.address || '',
-      })
-    } catch (error) {
-      console.error('Error fetching client:', error)
-    }
-  }
-
   useEffect(() => {
-    if (clientID) {
-      fetchClient()
+    if (!clientID) return
+    const fetchClient = async () => {
+      try {
+        const response = await fetch(APIURL + 'client/' + clientID, {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        })
+        const data = await response.json()
+        setClientFormData({
+          _id: data._id || '',
+          firstName: data.firstName || '',
+          lastName: data.lastName || '',
+          phoneNumber: data.phoneNumber || '',
+          email: data.email || '',
+          address: data.address || '',
+        })
+      } catch (error) {
+        console.error('Error fetching client:', error)
+      }
     }
-  }, [clientID, fetchClient])
+    fetchClient()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientID])
 
   const handleFirstNameChange = (e) => {
     setClientFormData((prevData) => ({
