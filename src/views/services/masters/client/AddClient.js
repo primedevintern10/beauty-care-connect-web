@@ -15,6 +15,7 @@ import APIURL from 'src/components/ApiConfig'
 
 const AddClientForm = () => {
   const [validated, setValidated] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [clientFormData, setClientFormData] = useState({
     firstName: '',
     lastName: '',
@@ -67,6 +68,7 @@ const AddClientForm = () => {
     } else {
       try {
         setValidated(true)
+        setSubmitError('')
 
         const token = localStorage.getItem('accessToken')
         const headers = {
@@ -86,15 +88,12 @@ const AddClientForm = () => {
         if (response.ok) {
           window.location.href = '/client'
         } else if (response.status === 401) {
-          console.error('Unauthorized while creating client. Please login again.')
-          localStorage.removeItem('accessToken')
-          localStorage.removeItem('jwt-token')
-          window.location.href = '/login'
+          setSubmitError('Unauthorized request. Please log in again and retry.')
         } else {
-          console.error('Error creating client. Status:', response.status)
+          setSubmitError('Error creating client. Status: ' + response.status)
         }
       } catch (error) {
-        console.error('Error submitting form:', error.message)
+        setSubmitError('Error submitting form: ' + error.message)
       }
     }
   }
@@ -174,6 +173,14 @@ const AddClientForm = () => {
           Submit
         </CButton>
       </CCol>
+
+      {submitError ? (
+        <CCol xs={12}>
+          <CFormFeedback invalid className="d-block">
+            {submitError}
+          </CFormFeedback>
+        </CCol>
+      ) : null}
     </CForm>
   )
 }
