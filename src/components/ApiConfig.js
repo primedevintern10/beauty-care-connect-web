@@ -1,3 +1,3 @@
-const APIURL = 'https://beauty-care-connect-api-production.up.railway.app/'
+const APIURL = '/api/'
 
 export default APIURL
