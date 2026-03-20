@@ -68,19 +68,30 @@ const AddClientForm = () => {
       try {
         setValidated(true)
 
+        const token = localStorage.getItem('accessToken')
+        const headers = {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+
+        if (token) {
+          headers.Authorization = 'Bearer ' + token
+        }
+
         const response = await fetch(APIURL + 'client', {
           method: 'POST',
           body: JSON.stringify(clientFormData),
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
-            'Content-type': 'application/json; charset=UTF-8',
-          },
+          headers,
         })
 
         if (response.ok) {
           window.location.href = '/client'
+        } else if (response.status === 401) {
+          console.error('Unauthorized while creating client. Please login again.')
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('jwt-token')
+          window.location.href = '/login'
         } else {
-          console.error('Error creating client')
+          console.error('Error creating client. Status:', response.status)
         }
       } catch (error) {
         console.error('Error submitting form:', error.message)
@@ -175,7 +186,9 @@ const AddClient = () => {
           <CCardHeader>
             <strong>Client</strong> <small>Add</small>
           </CCardHeader>
-          <CCardBody>{AddClientForm()}</CCardBody>
+          <CCardBody>
+            <AddClientForm />
+          </CCardBody>
         </CCard>
       </CCol>
     </CRow>
