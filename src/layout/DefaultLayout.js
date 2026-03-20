@@ -21,11 +21,11 @@ const DefaultLayout = () => {
       }
 
       const data = await response.json()
-      localStorage.setItem('userFName', data.firstName || '')
-      localStorage.setItem('userLName', data.lastName || '')
-      localStorage.setItem('userEmail', data.email || '')
-      localStorage.setItem('userGroupID', data.userGroup?._id || '')
-      localStorage.setItem('userGroupName', data.userGroup?.name || '')
+      localStorage.setItem('userFName', data.name || '')
+      localStorage.setItem('userLName', '')
+      localStorage.setItem('userEmail', data.username || '')
+      localStorage.setItem('userGroupID', data.role || '')
+      localStorage.setItem('userGroupName', data.role || '')
 
       return data
     } catch (error) {
