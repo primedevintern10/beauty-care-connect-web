@@ -79,9 +79,21 @@ const AddClientForm = () => {
           headers.Authorization = 'Bearer ' + token
         }
 
+        const payload = {
+          ...clientFormData,
+          // Backend expects address as an object, not a plain string.
+          address: {
+            no: '',
+            street: clientFormData.address || '',
+            city: '',
+            country: '',
+            postalCode: '',
+          },
+        }
+
         const response = await fetch(APIURL + 'client', {
           method: 'POST',
-          body: JSON.stringify(clientFormData),
+          body: JSON.stringify(payload),
           headers,
         })
 
