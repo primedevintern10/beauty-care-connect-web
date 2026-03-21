@@ -3,18 +3,19 @@ import { CCol, CForm, CFormInput, CFormFeedback, CFormLabel, CButton } from '@co
 import APIURL from 'src/components/ApiConfig'
 
 const EditUserForm = (UserProps) => {
+  const userData = UserProps.UserData || {}
   const [validated, setValidated] = useState(false)
 
   const [UserFormData, setUserFormData] = useState({
-    firstName: UserProps.UserData.firstName,
-    lastName: UserProps.UserData.lastName,
-    nicPassport: UserProps.UserData.nicPassport,
-    email: UserProps.UserData.email,
-    contactNo: UserProps.UserData.contactNo,
-    userName: UserProps.UserData.userName,
-    password: UserProps.UserData.password,
-    empStatus: UserProps.UserData.empStatus,
-    empID: UserProps.UserData.empID,
+    firstName: userData.firstName || '',
+    lastName: userData.lastName || '',
+    nicPassport: userData.nicPassport || '',
+    email: userData.email || '',
+    contactNo: userData.contactNo || '',
+    userName: userData.userName || '',
+    password: userData.password || '',
+    empStatus: userData.empStatus || '',
+    empID: userData.empID || userData._id || '',
   })
 
   const handleUserFormChange = (e) => {
@@ -32,7 +33,13 @@ const EditUserForm = (UserProps) => {
     if (form.checkValidity() === false) {
       event.stopPropagation()
     } else {
-      await fetch(APIURL + 'user/' + UserFormData.empID, {
+      const targetUserId = UserFormData.empID || userData._id
+      if (!targetUserId) {
+        console.error('Missing User ID for edit submit')
+        return
+      }
+
+      await fetch(APIURL + 'user/' + targetUserId, {
         method: 'PUT',
         body: JSON.stringify(UserFormData),
         headers: {
@@ -40,7 +47,12 @@ const EditUserForm = (UserProps) => {
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
         })

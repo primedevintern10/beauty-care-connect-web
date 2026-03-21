@@ -25,34 +25,45 @@ const EmployeeTable = () => {
   const [formType, setFormType] = useState('')
   const [employeeTableData, setEmployeeTableData] = useState([])
   const [employeeID, setEmployeeID] = useState('')
-  const [employeeTableDataByID, setEmployeeTableDataByID] = useState([])
+  const [employeeTableDataByID, setEmployeeTableDataByID] = useState(null)
+
+  const fetchEmployee = async () => {
+    try {
+      await fetch(APIURL + 'employee', {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
+        .then((data) => {
+          console.log(data)
+          setEmployeeTableData(data)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
 
   useEffect(() => {
-    const fetchEmployee = async () => {
-      try {
-        await fetch(APIURL + 'employee', {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data)
-            setEmployeeTableData(data)
-          })
-          .catch((err) => {
-            console.log(err.message)
-          })
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
     fetchEmployee()
   }, [])
 
   const handleEmployeeEdit = async (isvisible, type, employeeID = null) => {
+    if (!employeeID) {
+      console.error('Missing Employee ID for edit action')
+      return
+    }
+
     try {
       await fetch(APIURL + 'user/' + employeeID, {
         method: 'GET',
@@ -61,7 +72,12 @@ const EmployeeTable = () => {
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
           setEmployeeTableDataByID(data)
@@ -78,13 +94,50 @@ const EmployeeTable = () => {
   }
 
   const handleEmployeeAdd = (isvisible, type, employeeID = null) => {
+    setEmployeeTableDataByID(null)
     setVisible(isvisible)
     setFormType(type)
     setEmployeeID(employeeID)
   }
 
-  const handleEmployeeDelete = async (event, employeeID) => {
-    event.preventDefault()
+  const handleEmployeeDelete = async (employeeID) => {
+    if (!employeeID) {
+      console.error('Missing Employee ID for delete action')
+      return
+    }
+
+    try {
+      await fetch(APIURL + 'employee/' + employeeID, {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+        .then(async (response) => {
+          const message = await response.text()
+          if (!response.ok) {
+            throw new Error(message || 'Delete failed')
+          }
+          return message
+        })
+        .then(() => {
+          fetchEmployee()
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
+    } catch (error) {
+      console.error('Error submitting form:', error.message)
+    }
+  }
+
+  const closeModal = () => {
+    setVisible(false)
+    setFormType('')
+    setEmployeeID('')
+    setEmployeeTableDataByID(null)
+    fetchEmployee()
   }
 
   return (
@@ -117,7 +170,7 @@ const EmployeeTable = () => {
                 </CTableHead>
                 <CTableBody>
                   {employeeTableData.map((employee, index) => (
-                    <CTableRow key={index}>
+                    <CTableRow key={employee._id || employee.id || index}>
                       <CTableDataCell scope="row">{index + 1}</CTableDataCell>
                       <CTableDataCell>{employee.name}</CTableDataCell>
                       <CTableDataCell>{employee.contactNo}</CTableDataCell>
@@ -133,13 +186,17 @@ const EmployeeTable = () => {
                         </p>
                       </CTableDataCell>
                       <CTableDataCell>
+                        {!(employee._id || employee.id) && (
+                          <small className="text-danger me-2">Invalid ID</small>
+                        )}
                         <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
                           <CButton
                             color="warning"
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleEmployeeEdit(true, 'edit', employee._id)}
+                            disabled={!(employee._id || employee.id)}
+                            onClick={() => handleEmployeeEdit(true, 'edit', employee._id || employee.id)}
                           >
                             <CIcon icon={cilPen} customClassName="" />
                           </CButton>
@@ -150,7 +207,8 @@ const EmployeeTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleEmployeeDelete(employee._id)}
+                            disabled={!(employee._id || employee.id)}
+                            onClick={() => handleEmployeeDelete(employee._id || employee.id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />
                           </CButton>
@@ -166,7 +224,7 @@ const EmployeeTable = () => {
       </CRow>
       <EmployeeModel
         showModal={visible}
-        closeMOdel={() => setVisible(false)}
+        closeMOdel={closeModal}
         dataModel={formType}
         employeeID={employeeID}
         employeeData={employeeTableDataByID}

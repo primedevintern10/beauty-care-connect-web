@@ -3,18 +3,19 @@ import { CCol, CForm, CFormInput, CFormFeedback, CFormLabel, CButton } from '@co
 import APIURL from 'src/components/ApiConfig'
 
 const EditEmployeeForm = (employeeProps) => {
+  const employeeData = employeeProps.employeeData || {}
   const [validated, setValidated] = useState(false)
 
   const [employeeFormData, setEmployeeFormData] = useState({
-    firstName: employeeProps.employeeData.firstName,
-    lastName: employeeProps.employeeData.lastName,
-    nicPassport: employeeProps.employeeData.nicPassport,
-    email: employeeProps.employeeData.email,
-    contactNo: employeeProps.employeeData.contactNo,
-    userName: employeeProps.employeeData.userName,
-    password: employeeProps.employeeData.password,
-    empStatus: employeeProps.employeeData.empStatus,
-    empID: employeeProps.employeeData.empID,
+    firstName: employeeData.firstName || '',
+    lastName: employeeData.lastName || '',
+    nicPassport: employeeData.nicPassport || '',
+    email: employeeData.email || '',
+    contactNo: employeeData.contactNo || '',
+    userName: employeeData.userName || '',
+    password: employeeData.password || '',
+    empStatus: employeeData.empStatus || '',
+    empID: employeeData.empID || employeeData._id || '',
   })
 
   const handleEmployeeFormChange = (e) => {
@@ -32,7 +33,13 @@ const EditEmployeeForm = (employeeProps) => {
     if (form.checkValidity() === false) {
       event.stopPropagation()
     } else {
-      await fetch(APIURL + 'user/' + employeeFormData.empID, {
+      const targetEmployeeId = employeeFormData.empID || employeeData._id
+      if (!targetEmployeeId) {
+        console.error('Missing Employee ID for edit submit')
+        return
+      }
+
+      await fetch(APIURL + 'user/' + targetEmployeeId, {
         method: 'PUT',
         body: JSON.stringify(employeeFormData),
         headers: {
@@ -40,7 +47,12 @@ const EditEmployeeForm = (employeeProps) => {
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
         })

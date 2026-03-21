@@ -14,7 +14,6 @@ const AddEmployeeForm = () => {
     userName: '',
     password: '',
     empStatus: '',
-    empID: '',
   })
 
   const handleEmployeeFormChange = (e) => {
@@ -32,15 +31,31 @@ const AddEmployeeForm = () => {
     if (form.checkValidity() === false) {
       event.stopPropagation()
     } else {
+      const payload = {
+        firstName: employeeFormData.firstName,
+        lastName: employeeFormData.lastName,
+        nicPassport: employeeFormData.nicPassport,
+        email: employeeFormData.email,
+        contactNo: employeeFormData.contactNo,
+        userName: employeeFormData.userName,
+        password: employeeFormData.password,
+        empStatus: employeeFormData.empStatus,
+      }
+
       await fetch(APIURL + 'user', {
         method: 'POST',
-        body: JSON.stringify(employeeFormData),
+        body: JSON.stringify(payload),
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
         })

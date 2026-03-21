@@ -14,7 +14,6 @@ const AddUserForm = () => {
     userName: '',
     password: '',
     empStatus: '',
-    empID: '',
   })
 
   const handleUserFormChange = (e) => {
@@ -32,15 +31,31 @@ const AddUserForm = () => {
     if (form.checkValidity() === false) {
       event.stopPropagation()
     } else {
+      const payload = {
+        firstName: UserFormData.firstName,
+        lastName: UserFormData.lastName,
+        nicPassport: UserFormData.nicPassport,
+        email: UserFormData.email,
+        contactNo: UserFormData.contactNo,
+        userName: UserFormData.userName,
+        password: UserFormData.password,
+        empStatus: UserFormData.empStatus,
+      }
+
       await fetch(APIURL + 'user', {
         method: 'POST',
-        body: JSON.stringify(UserFormData),
+        body: JSON.stringify(payload),
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
         })
