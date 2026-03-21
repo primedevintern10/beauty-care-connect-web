@@ -75,57 +75,61 @@ const ViewUser = React.lazy(() => import('./views/administration/masters/user/Vi
 const Profile = React.lazy(() => import('./views/pages/profile/Profile'))
 const Settings = React.lazy(() => import('./views/pages/settings/Settings'))
 
+const ADMIN = 'ADMIN'
+const OWNER = 'OWNER'
+const EMP = 'EMP'
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboard', name: 'Dashboard', element: Dashboard, roles: [ADMIN, OWNER, EMP] },
 
-  { path: '/appointment', name: 'Appointment', element: Appointment },
-  { path: '/appointment-add', name: 'Add Appointments', element: AddAppointments },
-  { path: '/appointment-edit', name: 'Edit Appointments', element: EditAppointments },
-  { path: '/appointment-view', name: 'View Appointments', element: ViewAppointments },
+  { path: '/appointment', name: 'Appointment', element: Appointment, roles: [ADMIN, OWNER, EMP] },
+  { path: '/appointment-add', name: 'Add Appointments', element: AddAppointments, roles: [ADMIN, OWNER, EMP] },
+  { path: '/appointment-edit', name: 'Edit Appointments', element: EditAppointments, roles: [ADMIN, OWNER, EMP] },
+  { path: '/appointment-view', name: 'View Appointments', element: ViewAppointments, roles: [ADMIN, OWNER, EMP] },
 
-  { path: '/company', name: 'Company', element: Company },
-  { path: '/company-add', name: 'Add Company', element: AddCompany },
-  { path: '/company-edit', name: 'Edit Company', element: EditCompany },
-  { path: '/company-view', name: 'View Company', element: ViewCompany },
+  { path: '/company', name: 'Company', element: Company, roles: [ADMIN] },
+  { path: '/company-add', name: 'Add Company', element: AddCompany, roles: [ADMIN] },
+  { path: '/company-edit', name: 'Edit Company', element: EditCompany, roles: [ADMIN] },
+  { path: '/company-view', name: 'View Company', element: ViewCompany, roles: [ADMIN] },
 
-  { path: '/review', name: 'Review', element: Review },
-  { path: '/review-add', name: 'Add Review', element: AddReview },
-  { path: '/review-edit', name: 'Edit Review', element: EditReview },
-  { path: '/review-view', name: 'View Review', element: ViewReview },
+  { path: '/review', name: 'Review', element: Review, roles: [ADMIN, OWNER, EMP] },
+  { path: '/review-add', name: 'Add Review', element: AddReview, roles: [ADMIN, OWNER, EMP] },
+  { path: '/review-edit', name: 'Edit Review', element: EditReview, roles: [ADMIN, OWNER, EMP] },
+  { path: '/review-view', name: 'View Review', element: ViewReview, roles: [ADMIN, OWNER, EMP] },
 
-  { path: '/service', name: 'Service', element: Service },
-  { path: '/service-add', name: 'Add Service', element: AddService },
-  { path: '/service-edit', name: 'Edit Service', element: EditService },
-  { path: '/service-view', name: 'View Service', element: ViewService },
+  { path: '/service', name: 'Service', element: Service, roles: [ADMIN, OWNER] },
+  { path: '/service-add', name: 'Add Service', element: AddService, roles: [ADMIN, OWNER] },
+  { path: '/service-edit', name: 'Edit Service', element: EditService, roles: [ADMIN, OWNER] },
+  { path: '/service-view', name: 'View Service', element: ViewService, roles: [ADMIN, OWNER] },
 
-  { path: '/category', name: 'Category', element: Category },
-  { path: '/category-add', name: 'Add Category', element: AddCategory },
-  { path: '/category-edit', name: 'Edit Category', element: EditCategory },
-  { path: '/category-view', name: 'View Category', element: ViewCategory },
+  { path: '/category', name: 'Category', element: Category, roles: [ADMIN, OWNER] },
+  { path: '/category-add', name: 'Add Category', element: AddCategory, roles: [ADMIN, OWNER] },
+  { path: '/category-edit', name: 'Edit Category', element: EditCategory, roles: [ADMIN, OWNER] },
+  { path: '/category-view', name: 'View Category', element: ViewCategory, roles: [ADMIN, OWNER] },
 
-  { path: '/client', name: 'Client', element: Client },
-  { path: '/client-add', name: 'Add Client', element: AddClient },
-  { path: '/client-edit', name: 'Edit Client', element: EditClient },
-  { path: '/client-view', name: 'View Client', element: ViewClient },
+  { path: '/client', name: 'Client', element: Client, roles: [ADMIN, OWNER] },
+  { path: '/client-add', name: 'Add Client', element: AddClient, roles: [ADMIN, OWNER] },
+  { path: '/client-edit', name: 'Edit Client', element: EditClient, roles: [ADMIN, OWNER] },
+  { path: '/client-view', name: 'View Client', element: ViewClient, roles: [ADMIN, OWNER] },
 
-  { path: '/employee', name: 'Employee', element: Employee },
-  { path: '/employee-add', name: 'Add Employee', element: AddEmployee },
-  { path: '/employee-edit', name: 'Edit Employee', element: EditEmployee },
-  { path: '/employee-view', name: 'View Employee', element: ViewEmployee },
+  { path: '/employee', name: 'Employee', element: Employee, roles: [ADMIN, OWNER] },
+  { path: '/employee-add', name: 'Add Employee', element: AddEmployee, roles: [ADMIN, OWNER] },
+  { path: '/employee-edit', name: 'Edit Employee', element: EditEmployee, roles: [ADMIN, OWNER] },
+  { path: '/employee-view', name: 'View Employee', element: ViewEmployee, roles: [ADMIN, OWNER] },
 
-  { path: '/usergroup', name: 'User Group', element: UserGroup },
-  { path: '/usergroup-add', name: 'Add User Group', element: AddUserGroup },
-  { path: '/usergroup-edit', name: 'Edit User Group', element: EditUserGroup },
-  { path: '/usergroup-view', name: 'View User Group', element: ViewUserGroup },
+  { path: '/usergroup', name: 'User Group', element: UserGroup, roles: [ADMIN] },
+  { path: '/usergroup-add', name: 'Add User Group', element: AddUserGroup, roles: [ADMIN] },
+  { path: '/usergroup-edit', name: 'Edit User Group', element: EditUserGroup, roles: [ADMIN] },
+  { path: '/usergroup-view', name: 'View User Group', element: ViewUserGroup, roles: [ADMIN] },
 
-  { path: '/user', name: 'User', element: User },
-  { path: '/user-add', name: 'Add User', element: AddUser },
-  { path: '/user-edit', name: 'Edit User', element: EditUser },
-  { path: '/user-view', name: 'View User', element: ViewUser },
+  { path: '/user', name: 'User', element: User, roles: [ADMIN] },
+  { path: '/user-add', name: 'Add User', element: AddUser, roles: [ADMIN] },
+  { path: '/user-edit', name: 'Edit User', element: EditUser, roles: [ADMIN] },
+  { path: '/user-view', name: 'View User', element: ViewUser, roles: [ADMIN] },
 
-  { path: '/profile', name: 'Profile', element: Profile },
-  { path: '/settings', name: 'Settings', element: Settings },
+  { path: '/profile', name: 'Profile', element: Profile, roles: [ADMIN, OWNER, EMP] },
+  { path: '/settings', name: 'Settings', element: Settings, roles: [ADMIN, OWNER, EMP] },
 ]
 
 export default routes

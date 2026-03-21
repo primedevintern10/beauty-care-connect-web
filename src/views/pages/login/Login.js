@@ -12,99 +12,53 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-  CFormFeedback,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import APIURL from 'src/components/ApiConfig'
-import Toasts from 'src/views/toasts/Toasts'
 
 const Login = () => {
-  const [userFormData, setUserFormData] = useState({
-    username: '',
-    password: '',
-  })
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const [userTost, setUserTost] = useState({
-    title: '',
-    message: '',
-    isAutoHide: false,
-    isVisible: false,
-    type: '',
-  })
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
 
-  const [validated, setValidated] = useState(false)
+    if (!username || !password) {
+      setError('Username and password are required.')
+      return
+    }
 
-  const HandleUserFormChange = (e) => {
-    const { name, value } = e.target
-    setUserFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }))
-  }
+    setLoading(true)
+    try {
+      const response = await fetch(APIURL + 'auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      })
 
-  const HandleUserFormSubmit = async (event) => {
-    const form = event.currentTarget
-    event.preventDefault()
+      const data = await response.json()
 
-    if (form.checkValidity() === false) {
-      event.stopPropagation()
-    } else {
-      setValidated(true)
-      try {
-        const response = await fetch(APIURL + 'auth/login', {
-          method: 'POST',
-          body: JSON.stringify(userFormData),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        })
-
-        if (!response.ok) {
-          // Handle HTTP error responses (401, 404, 500, etc.)
-          const errorData = await response.json().catch(() => ({}))
-          const errorMessage = errorData.message || `HTTP Error ${response.status}: ${response.statusText}`
-          throw new Error(errorMessage)
-        }
-
-        const data = await response.json()
-
-        setUserTost({
-          title: 'User Login',
-          message: 'Login Successful...!',
-          isAutoHide: true,
-          isVisible: true,
-          type: 's',
-        })
-        sessionStorage.setItem('accessToken', data.jwtToken)
-        sessionStorage.setItem('jwt-token', data.jwtToken)
-        sessionStorage.setItem('username', data.username)
-        sessionStorage.setItem('userID', data._id)
-        sessionStorage.setItem('userGroupID', data.role || '')
-        sessionStorage.setItem('userGroupName', data.role || '')
-
-        window.location.href = '/dashboard'
-      } catch (error) {
-        // Handle all errors (network errors, HTTP errors, parse errors)
-        let errorMessage = 'Login failed. Please try again.'
-        
-        if (error.message.includes('401')) {
-          errorMessage = 'Invalid username or password!'
-        } else if (error.message.includes('Network')) {
-          errorMessage = 'Network error. Please check your connection.'
-        } else {
-          errorMessage = error.message || errorMessage
-        }
-
-        setUserTost({
-          title: 'User Login',
-          message: 'Login Unsuccessful...! Error : ' + errorMessage,
-          isAutoHide: true,
-          isVisible: true,
-          type: 'd',
-        })
-        console.error('Login error:', error)
+      if (!response.ok) {
+        setError(data.message || 'Login failed. Please try again.')
+        return
       }
+
+      sessionStorage.setItem('accessToken', data.jwtToken)
+      sessionStorage.setItem('jwt-token', data.jwtToken)
+      sessionStorage.setItem('username', data.username)
+      sessionStorage.setItem('userID', data._id)
+      sessionStorage.setItem('userGroupID', data.role || '')
+      sessionStorage.setItem('userGroupName', data.role || '')
+
+      window.location.href = '/dashboard'
+    } catch (err) {
+      setError('Network error. Please check your connection.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -116,15 +70,16 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm
-                    action="#"
-                    method="POST"
-                    noValidate
-                    validated={validated}
-                    onSubmit={HandleUserFormSubmit}
-                  >
+                  <CForm onSubmit={handleSubmit}>
                     <h1>Login</h1>
                     <p className="text-medium-emphasis">Sign In to your account</p>
+
+                    {error && (
+                      <div className="alert alert-danger" role="alert">
+                        {error}
+                      </div>
+                    )}
+
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -132,12 +87,12 @@ const Login = () => {
                       <CFormInput
                         placeholder="Username"
                         autoComplete="username"
-                        name="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         required
-                        onChange={HandleUserFormChange}
-                        value={userFormData.username}
                       />
                     </CInputGroup>
+
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
@@ -146,17 +101,16 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
-                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
-                        onChange={HandleUserFormChange}
-                        value={userFormData.password}
                       />
                     </CInputGroup>
-                    <CFormFeedback valid>Looks good!</CFormFeedback>
+
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4" type="submit">
-                          Login
+                        <CButton color="primary" className="px-4" type="submit" disabled={loading}>
+                          {loading ? 'Logging in...' : 'Login'}
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
@@ -170,6 +124,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
+
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
@@ -187,7 +142,6 @@ const Login = () => {
           </CCol>
         </CRow>
       </CContainer>
-      <Toasts dataToasts={userTost} />
     </div>
   )
 }
