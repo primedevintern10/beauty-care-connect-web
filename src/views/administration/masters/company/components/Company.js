@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCol,
   CForm,
@@ -17,6 +17,17 @@ const Company = (modelProps) => {
   console.log(modelProps)
   const [validated, setValidated] = useState(false)
 
+  const initialCompanyFormData = {
+    _id: '',
+    name: '',
+    registrationNo: '',
+    owner: '',
+    email: '',
+    webUrl: '',
+    country: '',
+    currency: '',
+  }
+
   const [CompanayFormData, setCompanayFormData] = useState({
     _id: modelProps.CompanyData ? modelProps.CompanyData._id : '',
     name: modelProps.CompanyData ? modelProps.CompanyData.name : '',
@@ -27,6 +38,24 @@ const Company = (modelProps) => {
     country: modelProps.CompanyData ? modelProps.CompanyData.country : '',
     currency: modelProps.CompanyData ? modelProps.CompanyData.currency : '',
   })
+
+  useEffect(() => {
+    if (modelProps.dataModel === 'edit' && modelProps.CompanyData) {
+      setCompanayFormData({
+        _id: modelProps.CompanyData._id || '',
+        name: modelProps.CompanyData.name || '',
+        registrationNo: modelProps.CompanyData.registrationNo || '',
+        owner: modelProps.CompanyData.owner || '',
+        email: modelProps.CompanyData.email || '',
+        webUrl: modelProps.CompanyData.webUrl || '',
+        country: modelProps.CompanyData.country || '',
+        currency: modelProps.CompanyData.currency || '',
+      })
+      return
+    }
+
+    setCompanayFormData(initialCompanyFormData)
+  }, [modelProps.dataModel, modelProps.CompanyData])
 
   const handleCompanyFormChange = (e) => {
     const { name, value } = e.target
@@ -47,13 +76,18 @@ const Company = (modelProps) => {
 
       await fetch(APIURL + 'company', {
         method: 'POST',
-        body: JSON.stringify(CompanayFormData),
+        body: JSON.stringify({ ...CompanayFormData, _id: '' }),
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
           sessionStorage.setItem('lastcompanyID', data._id)
@@ -71,7 +105,13 @@ const Company = (modelProps) => {
     if (form.checkValidity() === false) {
       event.stopPropagation()
     } else {
-      await fetch(APIURL + 'company/' + modelProps.CompanyData._id, {
+      const companyId = modelProps.CompanyData?._id || CompanayFormData._id
+      if (!companyId) {
+        console.error('Missing Company ID for edit submit')
+        return
+      }
+
+      await fetch(APIURL + 'company/' + companyId, {
         method: 'PUT',
         body: JSON.stringify(CompanayFormData),
         headers: {
@@ -79,7 +119,12 @@ const Company = (modelProps) => {
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
         })

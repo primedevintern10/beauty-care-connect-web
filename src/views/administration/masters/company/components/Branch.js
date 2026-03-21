@@ -95,8 +95,14 @@ const Branch = (modelProps) => {
   }
 
   const fetchBranch = async () => {
+    const companyId = modelProps.CompanyData?._id || sessionStorage.getItem('lastcompanyID')
+    if (!companyId) {
+      setBranchData([])
+      return
+    }
+
     try {
-      await fetch(APIURL + 'branch/by-company/' + modelProps.CompanyData._id, {
+      await fetch(APIURL + 'branch/by-company/' + companyId, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
@@ -119,7 +125,7 @@ const Branch = (modelProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchBranch()
-  }, [])
+  }, [modelProps.CompanyData?._id])
 
   return (
     <>

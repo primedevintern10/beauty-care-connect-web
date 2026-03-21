@@ -25,7 +25,7 @@ const CompanyTable = () => {
   const [formType, setFormType] = useState('')
   const [CompanyTableData, setCompanyTableData] = useState([])
   const [CompanyID, setCompanyID] = useState('')
-  const [CompanyTableDataByID, setCompanyTableDataByID] = useState([])
+  const [CompanyTableDataByID, setCompanyTableDataByID] = useState(null)
 
   const fetchCompany = async () => {
     try {
@@ -36,7 +36,12 @@ const CompanyTable = () => {
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
           setCompanyTableData(data)
@@ -55,10 +60,18 @@ const CompanyTable = () => {
 
   const closeMode = async () => {
     setVisible(false)
+    setFormType('')
+    setCompanyID('')
+    setCompanyTableDataByID(null)
     fetchCompany()
   }
 
   const handleCompanyEdit = async (isvisible, type, CompanyID = null) => {
+    if (!CompanyID) {
+      console.error('Missing Company ID for edit action')
+      return
+    }
+
     try {
       await fetch(APIURL + 'company/' + CompanyID, {
         method: 'GET',
@@ -67,7 +80,12 @@ const CompanyTable = () => {
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(await response.text())
+          }
+          return response.json()
+        })
         .then((data) => {
           console.log(data)
           setCompanyTableDataByID(data)
@@ -84,12 +102,18 @@ const CompanyTable = () => {
   }
 
   const handleCompanyAdd = (isvisible, type, CompanyID = null) => {
+    setCompanyTableDataByID(null)
     setVisible(isvisible)
     setFormType(type)
     setCompanyID(CompanyID)
   }
 
   const handleCompanyDelete = async (CompanyID) => {
+    if (!CompanyID) {
+      console.error('Missing Company ID for delete action')
+      return
+    }
+
     try {
       await fetch(APIURL + 'company/' + CompanyID, {
         method: 'DELETE',
@@ -98,7 +122,13 @@ const CompanyTable = () => {
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          const message = await response.text()
+          if (!response.ok) {
+            throw new Error(message || 'Delete failed')
+          }
+          return message
+        })
         .then((data) => {
           console.log(data)
           fetchCompany()
@@ -144,7 +174,7 @@ const CompanyTable = () => {
                 </CTableHead>
                 <CTableBody>
                   {CompanyTableData.map((Company, index) => (
-                    <CTableRow key={index}>
+                    <CTableRow key={Company._id || Company.id || index}>
                       <CTableDataCell scope="row">{index + 1}</CTableDataCell>
                       <CTableDataCell>{Company.name}</CTableDataCell>
                       {/* <CTableDataCell>{Company.CreatedDate}</CTableDataCell>
@@ -166,7 +196,7 @@ const CompanyTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleCompanyEdit(true, 'edit', Company._id)}
+                            onClick={() => handleCompanyEdit(true, 'edit', Company._id || Company.id)}
                           >
                             <CIcon icon={cilPen} customClassName="" />
                           </CButton>
@@ -177,7 +207,7 @@ const CompanyTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            onClick={() => handleCompanyDelete(Company._id)}
+                            onClick={() => handleCompanyDelete(Company._id || Company.id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />
                           </CButton>

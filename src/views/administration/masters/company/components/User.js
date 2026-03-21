@@ -156,8 +156,14 @@ const User = (modelProps) => {
   }
 
   const fetchBranch = async () => {
+    const companyId = modelProps.CompanyData?._id || sessionStorage.getItem('lastcompanyID')
+    if (!companyId) {
+      setBranchData([])
+      return
+    }
+
     try {
-      await fetch(APIURL + 'branch/by-company/' + modelProps.CompanyData._id, {
+      await fetch(APIURL + 'branch/by-company/' + companyId, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
@@ -181,7 +187,7 @@ const User = (modelProps) => {
   useEffect(() => {
     fetchUserGroup()
     fetchBranch()
-  }, [])
+  }, [modelProps.CompanyData?._id])
 
   return (
     <>
