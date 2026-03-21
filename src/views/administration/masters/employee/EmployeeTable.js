@@ -65,7 +65,7 @@ const EmployeeTable = () => {
     }
 
     try {
-      await fetch(APIURL + 'user/' + employeeID, {
+      await fetch(APIURL + 'employee/' + employeeID, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),

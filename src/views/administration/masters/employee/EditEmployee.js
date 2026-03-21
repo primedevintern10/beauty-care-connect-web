@@ -7,15 +7,15 @@ const EditEmployeeForm = (employeeProps) => {
   const [validated, setValidated] = useState(false)
 
   const [employeeFormData, setEmployeeFormData] = useState({
-    firstName: employeeData.firstName || '',
-    lastName: employeeData.lastName || '',
-    nicPassport: employeeData.nicPassport || '',
+    firstName: employeeData.name ? String(employeeData.name).split(' ')[0] : '',
+    lastName: employeeData.name ? String(employeeData.name).split(' ').slice(1).join(' ') : '',
+    nicPassport: employeeData.nic || '',
     email: employeeData.email || '',
     contactNo: employeeData.contactNo || '',
-    userName: employeeData.userName || '',
-    password: employeeData.password || '',
-    empStatus: employeeData.empStatus || '',
-    empID: employeeData.empID || employeeData._id || '',
+    userName: '',
+    password: '',
+    empStatus: employeeData.isEnabled === false ? 'inactive' : 'active',
+    empID: employeeData._id || employeeData.empID || '',
   })
 
   const handleEmployeeFormChange = (e) => {
@@ -39,9 +39,20 @@ const EditEmployeeForm = (employeeProps) => {
         return
       }
 
-      await fetch(APIURL + 'user/' + targetEmployeeId, {
+      const payload = {
+        nic: employeeFormData.nicPassport,
+        name: `${employeeFormData.firstName} ${employeeFormData.lastName}`.trim(),
+        nickName: employeeFormData.firstName,
+        email: employeeFormData.email,
+        contactNo: employeeFormData.contactNo,
+        isEnabled: String(employeeFormData.empStatus).toLowerCase() !== 'inactive',
+        type: employeeData.type || 'EMP',
+        branch: employeeData.branch || [],
+      }
+
+      await fetch(APIURL + 'employee/' + targetEmployeeId, {
         method: 'PUT',
-        body: JSON.stringify(employeeFormData),
+        body: JSON.stringify(payload),
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',

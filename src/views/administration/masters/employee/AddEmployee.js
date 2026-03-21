@@ -32,17 +32,16 @@ const AddEmployeeForm = () => {
       event.stopPropagation()
     } else {
       const payload = {
-        firstName: employeeFormData.firstName,
-        lastName: employeeFormData.lastName,
-        nicPassport: employeeFormData.nicPassport,
+        nic: employeeFormData.nicPassport,
+        name: `${employeeFormData.firstName} ${employeeFormData.lastName}`.trim(),
+        nickName: employeeFormData.firstName,
         email: employeeFormData.email,
         contactNo: employeeFormData.contactNo,
-        userName: employeeFormData.userName,
-        password: employeeFormData.password,
-        empStatus: employeeFormData.empStatus,
+        isEnabled: String(employeeFormData.empStatus).toLowerCase() !== 'inactive',
+        type: 'EMP',
       }
 
-      await fetch(APIURL + 'user', {
+      await fetch(APIURL + 'employee', {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: {
