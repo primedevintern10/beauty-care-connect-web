@@ -35,7 +35,7 @@ const AddAppointmentForm = () => {
       const response = await fetch(APIURL + 'client', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -48,12 +48,12 @@ const AddAppointmentForm = () => {
 
   const fetchServices = async () => {
     try {
-      const branchID = localStorage.getItem('branchID')
+      const branchID = sessionStorage.getItem('branchID')
       const endpoint = branchID ? 'service/branch/' + branchID : 'service'
       const response = await fetch(APIURL + endpoint, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -69,7 +69,7 @@ const AddAppointmentForm = () => {
       const response = await fetch(APIURL + 'appointmentStatus', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -145,7 +145,7 @@ const AddAppointmentForm = () => {
       try {
         setValidated(true)
 
-        const branchID = localStorage.getItem('branchID')
+        const branchID = sessionStorage.getItem('branchID')
         const payload = {
           ...appointmentFormData,
           branch: branchID ? { _id: branchID } : undefined,
@@ -155,7 +155,7 @@ const AddAppointmentForm = () => {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
           },
         })

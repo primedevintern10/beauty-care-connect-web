@@ -26,7 +26,7 @@ const ViewClient = () => {
         const response = await fetch(APIURL + 'client/' + clientID, {
           method: 'GET',
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
           },
         })

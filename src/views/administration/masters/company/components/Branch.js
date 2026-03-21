@@ -63,7 +63,7 @@ const Branch = (modelProps) => {
       },
       email: BranchFormData.email,
       company: {
-        _id: localStorage.getItem('lastcompanyID'),
+        _id: sessionStorage.getItem('lastcompanyID'),
       },
     }
 
@@ -79,14 +79,14 @@ const Branch = (modelProps) => {
         method: 'POST',
         body: JSON.stringify(BranchDetails),
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          localStorage.setItem('lastBranchID', data._id)
+          sessionStorage.setItem('lastBranchID', data._id)
         })
         .catch((err) => {
           console.log(err.message)
@@ -99,7 +99,7 @@ const Branch = (modelProps) => {
       await fetch(APIURL + 'branch/by-company/' + modelProps.CompanyData._id, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

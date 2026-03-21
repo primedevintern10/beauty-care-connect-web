@@ -3,8 +3,8 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/inde
 import APIURL from 'src/components/ApiConfig'
 
 const DefaultLayout = () => {
-  const token = localStorage.getItem('accessToken')
-  const userId = localStorage.getItem('userID')
+  const token = sessionStorage.getItem('accessToken')
+  const userId = sessionStorage.getItem('userID')
 
   const fetchUserByID = async () => {
     try {
@@ -21,11 +21,11 @@ const DefaultLayout = () => {
       }
 
       const data = await response.json()
-      localStorage.setItem('userFName', data.name || '')
-      localStorage.setItem('userLName', '')
-      localStorage.setItem('userEmail', data.username || '')
-      localStorage.setItem('userGroupID', data.role || '')
-      localStorage.setItem('userGroupName', data.role || '')
+      sessionStorage.setItem('userFName', data.name || '')
+      sessionStorage.setItem('userLName', '')
+      sessionStorage.setItem('userEmail', data.username || '')
+      sessionStorage.setItem('userGroupID', data.role || '')
+      sessionStorage.setItem('userGroupName', data.role || '')
 
       return data
     } catch (error) {
@@ -54,8 +54,8 @@ const DefaultLayout = () => {
 
       const data = await response.json()
       if (data?.branch?.length > 0) {
-        localStorage.setItem('branchID', data.branch[0]?._id || '')
-        localStorage.setItem('CompanyID', data.branch[0]?.company?._id || '')
+        sessionStorage.setItem('branchID', data.branch[0]?._id || '')
+        sessionStorage.setItem('CompanyID', data.branch[0]?.company?._id || '')
       }
     } catch (error) {
       console.error('Error fetching data:', error)

@@ -31,7 +31,7 @@ const EditCategoryForm = (categoryProps) => {
           method: 'PUT',
           body: JSON.stringify(categoryFormData),
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
           },
         })

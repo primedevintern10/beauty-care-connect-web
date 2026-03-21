@@ -33,7 +33,7 @@ const UserTable = () => {
         await fetch(APIURL + 'user', {
           method: 'GET',
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
           },
         })
@@ -57,7 +57,7 @@ const UserTable = () => {
       await fetch(APIURL + 'user/' + UserID, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

@@ -32,7 +32,7 @@ const ServiceTable = () => {
       await fetch(APIURL + 'service', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -63,7 +63,7 @@ const ServiceTable = () => {
       await fetch(APIURL + 'service/' + serviceID, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -96,7 +96,7 @@ const ServiceTable = () => {
       await fetch(APIURL + 'service/' + serviceID, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

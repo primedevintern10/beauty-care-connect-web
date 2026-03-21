@@ -33,7 +33,7 @@ const EmployeeTable = () => {
         await fetch(APIURL + 'employee', {
           method: 'GET',
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
           },
         })
@@ -57,7 +57,7 @@ const EmployeeTable = () => {
       await fetch(APIURL + 'user/' + employeeID, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

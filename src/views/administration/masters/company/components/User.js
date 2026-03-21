@@ -57,14 +57,14 @@ const User = (modelProps) => {
       method: 'POST',
       body: JSON.stringify(UserDetails),
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
         'Content-type': 'application/json; charset=UTF-8',
       },
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
-        // localStorage.setItem('lastcompanyID', data._id)
+        // sessionStorage.setItem('lastcompanyID', data._id)
       })
       .catch((err) => {
         console.log(err.message)
@@ -77,14 +77,14 @@ const User = (modelProps) => {
       method: 'POST',
       body: JSON.stringify(EmployeeDetails),
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
         'Content-type': 'application/json; charset=UTF-8',
       },
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
-        // localStorage.setItem('lastcompanyID', data._id)
+        // sessionStorage.setItem('lastcompanyID', data._id)
       })
       .catch((err) => {
         console.log(err.message)
@@ -138,7 +138,7 @@ const User = (modelProps) => {
       await fetch(APIURL + 'userGroup', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -160,7 +160,7 @@ const User = (modelProps) => {
       await fetch(APIURL + 'branch/by-company/' + modelProps.CompanyData._id, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

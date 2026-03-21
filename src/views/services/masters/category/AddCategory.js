@@ -32,7 +32,7 @@ const AddCategoryForm = () => {
           method: 'POST',
           body: JSON.stringify(categoryFormData),
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
           },
         })

@@ -32,7 +32,7 @@ const UserGroupTable = () => {
       await fetch(APIURL + 'userGroup', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -58,7 +58,7 @@ const UserGroupTable = () => {
       await fetch(APIURL + 'userGroup/' + userGroupID, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -89,7 +89,7 @@ const UserGroupTable = () => {
       await fetch(APIURL + 'userGroup/' + userGroupID, {
         method: 'DELETE',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

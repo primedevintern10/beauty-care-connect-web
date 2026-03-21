@@ -70,7 +70,7 @@ const AddClientForm = () => {
         setValidated(true)
         setSubmitError('')
 
-        const token = localStorage.getItem('accessToken')
+        const token = sessionStorage.getItem('accessToken')
         const headers = {
           'Content-type': 'application/json; charset=UTF-8',
         }

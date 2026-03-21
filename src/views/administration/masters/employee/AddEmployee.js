@@ -36,7 +36,7 @@ const AddEmployeeForm = () => {
         method: 'POST',
         body: JSON.stringify(employeeFormData),
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

@@ -71,7 +71,7 @@ const CustomStyles = () => {
     } else {
       try {
         setValidated(true)
-        const branchID = localStorage.getItem('branchID')
+        const branchID = sessionStorage.getItem('branchID')
         const payload = {
           ...serviceFormData,
           branch: branchID ? [{ _id: branchID }] : [],
@@ -81,7 +81,7 @@ const CustomStyles = () => {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
           },
         })
@@ -105,7 +105,7 @@ const CustomStyles = () => {
       await fetch(APIURL + 'serviceCategory', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

@@ -68,10 +68,10 @@ const Login = () => {
               isVisible: true,
               type: 's',
             })
-            localStorage.setItem('accessToken', data.jwtToken)
-            localStorage.setItem('jwt-token', data.jwtToken)
-            localStorage.setItem('username', data.username)
-            localStorage.setItem('userID', data._id)
+            sessionStorage.setItem('accessToken', data.jwtToken)
+            sessionStorage.setItem('jwt-token', data.jwtToken)
+            sessionStorage.setItem('username', data.username)
+            sessionStorage.setItem('userID', data._id)
 
             window.location.href = '/dashboard'
           })

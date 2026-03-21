@@ -24,13 +24,13 @@ const ServiceTable = () => {
 
   const fetchService = async () => {
     try {
-      const branchID = localStorage.getItem('branchID')
+      const branchID = sessionStorage.getItem('branchID')
       const endpoint = branchID ? 'service/branch/' + branchID : 'service'
 
       await fetch(APIURL + endpoint, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -52,7 +52,7 @@ const ServiceTable = () => {
       const response = await fetch(APIURL + 'service/' + serviceId, {
         method: 'DELETE',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

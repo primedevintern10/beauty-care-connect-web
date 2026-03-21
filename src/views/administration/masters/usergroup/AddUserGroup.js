@@ -47,7 +47,7 @@ const AddUserGroupForm = () => {
         method: 'POST',
         body: JSON.stringify(UserGroupFormData),
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

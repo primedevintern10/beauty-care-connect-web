@@ -27,7 +27,7 @@ const ViewAppointments = () => {
       const response = await fetch(APIURL + 'appointment/' + appointmentID, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -44,7 +44,7 @@ const ViewAppointments = () => {
       const response = await fetch(APIURL + 'appointmentStatus', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -102,7 +102,7 @@ const ViewAppointments = () => {
           note: AppointmentData.note,
         }),
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

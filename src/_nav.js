@@ -12,7 +12,7 @@ import { CNavGroup, CNavItem } from '@coreui/react'
 
 var _nav = []
 
-switch (localStorage.getItem('userGroupName')) {
+switch (sessionStorage.getItem('userGroupName')) {
   case 'ADMIN':
     _nav = [
       {

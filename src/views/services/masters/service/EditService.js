@@ -31,7 +31,7 @@ const EditServiceForm = (categoryProps) => {
           method: 'PUT',
           body: JSON.stringify(serviceFormData),
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Content-type': 'application/json; charset=UTF-8',
           },
         })

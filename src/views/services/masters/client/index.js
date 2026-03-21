@@ -27,7 +27,7 @@ const ClientTable = () => {
       const response = await fetch(APIURL + 'client/' + clientId, {
         method: 'DELETE',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -45,7 +45,7 @@ const ClientTable = () => {
       const response = await fetch(APIURL + 'client', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

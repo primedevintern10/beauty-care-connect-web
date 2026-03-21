@@ -49,14 +49,14 @@ const Company = (modelProps) => {
         method: 'POST',
         body: JSON.stringify(CompanayFormData),
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
         .then((response) => response.json())
         .then((data) => {
           console.log(data)
-          localStorage.setItem('lastcompanyID', data._id)
+          sessionStorage.setItem('lastcompanyID', data._id)
         })
         .catch((err) => {
           console.log(err.message)
@@ -75,7 +75,7 @@ const Company = (modelProps) => {
         method: 'PUT',
         body: JSON.stringify(CompanayFormData),
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

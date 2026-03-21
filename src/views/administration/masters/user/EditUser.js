@@ -36,7 +36,7 @@ const EditUserForm = (UserProps) => {
         method: 'PUT',
         body: JSON.stringify(UserFormData),
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })

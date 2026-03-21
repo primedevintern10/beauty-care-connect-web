@@ -32,7 +32,7 @@ const CompanyTable = () => {
       await fetch(APIURL + 'company', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -63,7 +63,7 @@ const CompanyTable = () => {
       await fetch(APIURL + 'company/' + CompanyID, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
@@ -94,7 +94,7 @@ const CompanyTable = () => {
       await fetch(APIURL + 'serviceCompany/' + CompanyID, {
         method: 'DELETE',
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+          Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
