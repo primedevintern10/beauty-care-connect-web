@@ -229,6 +229,26 @@ switch (sessionStorage.getItem('userGroupName')) {
           },
         ],
       },
+      {
+        component: CNavGroup,
+        name: 'Administration',
+        icon: <CIcon icon={cilSitemap} customClassName="nav-icon" />,
+        items: [
+          {
+            component: CNavGroup,
+            name: 'Master',
+            to: '#',
+            icon: <CIcon icon={cilMemory} customClassName="nav-icon" />,
+            items: [
+              {
+                component: CNavItem,
+                name: 'Company',
+                to: '/company',
+              },
+            ],
+          },
+        ],
+      },
     ]
 }
 
