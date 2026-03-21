@@ -26,6 +26,7 @@ const EmployeeTable = () => {
   const [employeeTableData, setEmployeeTableData] = useState([])
   const [employeeID, setEmployeeID] = useState('')
   const [employeeTableDataByID, setEmployeeTableDataByID] = useState(null)
+  const [deletingEmployeeIds, setDeletingEmployeeIds] = useState([])
 
   const fetchEmployee = async () => {
     try {
@@ -106,6 +107,12 @@ const EmployeeTable = () => {
       return
     }
 
+    if (deletingEmployeeIds.includes(employeeID)) {
+      return
+    }
+
+    setDeletingEmployeeIds((prev) => [...prev, employeeID])
+
     try {
       await fetch(APIURL + 'employee/' + employeeID, {
         method: 'DELETE',
@@ -116,12 +123,16 @@ const EmployeeTable = () => {
       })
         .then(async (response) => {
           const message = await response.text()
-          if (!response.ok) {
+          // 404 here can mean the record was already removed by a duplicate click or stale UI state.
+          if (!response.ok && response.status !== 404) {
             throw new Error(message || 'Delete failed')
           }
           return message
         })
         .then(() => {
+          setEmployeeTableData((prev) =>
+            prev.filter((employee) => (employee._id || employee.id) !== employeeID),
+          )
           fetchEmployee()
         })
         .catch((err) => {
@@ -129,6 +140,8 @@ const EmployeeTable = () => {
         })
     } catch (error) {
       console.error('Error submitting form:', error.message)
+    } finally {
+      setDeletingEmployeeIds((prev) => prev.filter((id) => id !== employeeID))
     }
   }
 
@@ -207,7 +220,10 @@ const EmployeeTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            disabled={!(employee._id || employee.id)}
+                            disabled={
+                              !(employee._id || employee.id) ||
+                              deletingEmployeeIds.includes(employee._id || employee.id)
+                            }
                             onClick={() => handleEmployeeDelete(employee._id || employee.id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />
