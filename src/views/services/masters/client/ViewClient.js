@@ -16,6 +16,17 @@ import APIURL from 'src/components/ApiConfig'
 const ViewClient = () => {
   const [client, setClient] = useState(null)
 
+  const formatAddress = (address) => {
+    if (!address) return '-'
+    if (typeof address === 'string') return address || '-'
+
+    return (
+      [address.no, address.street, address.city, address.country, address.postalCode]
+        .filter(Boolean)
+        .join(', ') || '-'
+    )
+  }
+
   const queryParameters = new URLSearchParams(window.location.search)
   const clientID = queryParameters.get('id')
 
@@ -69,7 +80,7 @@ const ViewClient = () => {
                   </CTableRow>
                   <CTableRow>
                     <CTableHeaderCell>Address</CTableHeaderCell>
-                    <CTableDataCell>{client.address || '-'}</CTableDataCell>
+                    <CTableDataCell>{formatAddress(client.address)}</CTableDataCell>
                   </CTableRow>
                 </CTableBody>
               </CTable>

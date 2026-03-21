@@ -27,6 +27,14 @@ const EditClientForm = () => {
   const queryParameters = new URLSearchParams(window.location.search)
   const clientID = queryParameters.get('id')
 
+  const getAddressText = (address) => {
+    if (!address) return ''
+    if (typeof address === 'string') return address
+    return [address.no, address.street, address.city, address.country, address.postalCode]
+      .filter(Boolean)
+      .join(', ')
+  }
+
   useEffect(() => {
     if (!clientID) return
     const fetchClient = async () => {
@@ -45,7 +53,7 @@ const EditClientForm = () => {
           lastName: data.lastName || '',
           phoneNumber: data.phoneNumber || '',
           email: data.email || '',
-          address: data.address || '',
+          address: getAddressText(data.address),
         })
       } catch (error) {
         console.error('Error fetching client:', error)
@@ -102,9 +110,20 @@ const EditClientForm = () => {
     setValidated(true)
 
     try {
+      const payload = {
+        ...clientFormData,
+        address: {
+          no: '',
+          street: clientFormData.address || '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+      }
+
       const response = await fetch(APIURL + 'client/' + clientID, {
         method: 'PUT',
-        body: JSON.stringify(clientFormData),
+        body: JSON.stringify(payload),
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',
