@@ -52,47 +52,55 @@ const Login = () => {
     } else {
       setValidated(true)
       try {
-        await fetch(APIURL + 'auth/login', {
+        const response = await fetch(APIURL + 'auth/login', {
           method: 'POST',
           body: JSON.stringify(userFormData),
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
           },
         })
-          .then((response) => response.json())
-          .then((data) => {
-            setUserTost({
-              title: 'User Login',
-              message: 'Login Successful...!',
-              isAutoHide: true,
-              isVisible: true,
-              type: 's',
-            })
-            sessionStorage.setItem('accessToken', data.jwtToken)
-            sessionStorage.setItem('jwt-token', data.jwtToken)
-            sessionStorage.setItem('username', data.username)
-            sessionStorage.setItem('userID', data._id)
 
-            window.location.href = '/dashboard'
-          })
-          .catch((err) => {
-            setUserTost({
-              title: 'User Login',
-              message: 'Login Unsuccessful...! Error : ' + err.message,
-              isAutoHide: true,
-              isVisible: true,
-              type: 'd',
-            })
-          })
-      } catch (error) {
-        // Handle error
+        if (!response.ok) {
+          // Handle HTTP error responses (401, 404, 500, etc.)
+          const errorData = await response.json().catch(() => ({}))
+          const errorMessage = errorData.message || `HTTP Error ${response.status}: ${response.statusText}`
+          throw new Error(errorMessage)
+        }
+
+        const data = await response.json()
         setUserTost({
           title: 'User Login',
-          message: 'Login Unsuccessful...! Error : ' + error.message,
+          message: 'Login Successful...!',
+          isAutoHide: true,
+          isVisible: true,
+          type: 's',
+        })
+        sessionStorage.setItem('accessToken', data.jwtToken)
+        sessionStorage.setItem('jwt-token', data.jwtToken)
+        sessionStorage.setItem('username', data.username)
+        sessionStorage.setItem('userID', data._id)
+
+        window.location.href = '/dashboard'
+      } catch (error) {
+        // Handle all errors (network errors, HTTP errors, parse errors)
+        let errorMessage = 'Login failed. Please try again.'
+        
+        if (error.message.includes('401')) {
+          errorMessage = 'Invalid username or password!'
+        } else if (error.message.includes('Network')) {
+          errorMessage = 'Network error. Please check your connection.'
+        } else {
+          errorMessage = error.message || errorMessage
+        }
+
+        setUserTost({
+          title: 'User Login',
+          message: 'Login Unsuccessful...! Error : ' + errorMessage,
           isAutoHide: true,
           isVisible: true,
           type: 'd',
         })
+        console.error('Login error:', error)
       }
     }
   }
