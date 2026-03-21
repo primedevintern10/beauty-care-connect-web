@@ -91,7 +91,7 @@ const CompanyTable = () => {
 
   const handleCompanyDelete = async (CompanyID) => {
     try {
-      await fetch(APIURL + 'serviceCompany/' + CompanyID, {
+      await fetch(APIURL + 'company/' + CompanyID, {
         method: 'DELETE',
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),

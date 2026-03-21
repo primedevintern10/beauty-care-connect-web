@@ -84,10 +84,10 @@ const routes = [
   { path: '/appointment-edit', name: 'Edit Appointments', element: EditAppointments },
   { path: '/appointment-view', name: 'View Appointments', element: ViewAppointments },
 
-  { path: '/company', name: 'Employee', element: Company },
-  { path: '/company-add', name: 'Add Employee', element: AddCompany },
-  { path: '/company-edit', name: 'Edit Employee', element: EditCompany },
-  { path: '/company-view', name: 'View Employee', element: ViewCompany },
+  { path: '/company', name: 'Company', element: Company },
+  { path: '/company-add', name: 'Add Company', element: AddCompany },
+  { path: '/company-edit', name: 'Edit Company', element: EditCompany },
+  { path: '/company-view', name: 'View Company', element: ViewCompany },
 
   { path: '/review', name: 'Review', element: Review },
   { path: '/review-add', name: 'Add Review', element: AddReview },
