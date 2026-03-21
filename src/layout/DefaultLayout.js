@@ -34,8 +34,9 @@ const DefaultLayout = () => {
     }
   }
 
-  const fetchCompanyBranchData = async (email) => {
-    if (!email) {
+  const fetchCompanyBranchData = async (email, role) => {
+    // Employee profile lookup is only relevant for employee users.
+    if (!email || role !== 'EMPLOYEE') {
       return
     }
 
@@ -69,7 +70,7 @@ const DefaultLayout = () => {
       }
 
       const user = await fetchUserByID()
-      await fetchCompanyBranchData(user?.email)
+      await fetchCompanyBranchData(user?.email, user?.role)
     }
 
     bootstrapUserContext()
