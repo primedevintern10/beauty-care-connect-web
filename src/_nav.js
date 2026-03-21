@@ -245,6 +245,16 @@ switch (sessionStorage.getItem('userGroupName')) {
                 name: 'Company',
                 to: '/company',
               },
+              {
+                component: CNavItem,
+                name: 'Employee',
+                to: '/employee',
+              },
+              {
+                component: CNavItem,
+                name: 'User',
+                to: '/user',
+              },
             ],
           },
         ],
