@@ -71,6 +71,10 @@ const AddUser = React.lazy(() => import('./views/administration/masters/user/Add
 const EditUser = React.lazy(() => import('./views/administration/masters/user/EditUser'))
 const ViewUser = React.lazy(() => import('./views/administration/masters/user/ViewUser'))
 
+// Account
+const Profile = React.lazy(() => import('./views/pages/profile/Profile'))
+const Settings = React.lazy(() => import('./views/pages/settings/Settings'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -119,6 +123,9 @@ const routes = [
   { path: '/user-add', name: 'Add User', element: AddUser },
   { path: '/user-edit', name: 'Edit User', element: EditUser },
   { path: '/user-view', name: 'View User', element: ViewUser },
+
+  { path: '/profile', name: 'Profile', element: Profile },
+  { path: '/settings', name: 'Settings', element: Settings },
 ]
 
 export default routes

@@ -3,6 +3,7 @@ import {
   CAvatar,
   CDropdown,
   CDropdownHeader,
+  CDropdownDivider,
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
@@ -13,6 +14,11 @@ import CIcon from '@coreui/icons-react'
 import avatar8 from './../../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
+  const handleLogout = () => {
+    sessionStorage.clear()
+    window.location.href = '/'
+  }
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -49,14 +55,16 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader> */}
-        <CDropdownItem href="#">
+        <CDropdownItem href="/profile">
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem href="#">
+        <CDropdownItem href="/settings">
           <CIcon icon={cilSettings} className="me-2" />
           Settings
         </CDropdownItem>
+        <CDropdownDivider />
+        <CDropdownItem onClick={handleLogout}>Logout</CDropdownItem>
         {/* <CDropdownItem href="#">
           <CIcon icon={cilCreditCard} className="me-2" />
           Payments
