@@ -51,7 +51,7 @@ const EditClientForm = () => {
           _id: data._id || '',
           firstName: data.firstName || '',
           lastName: data.lastName || '',
-          phoneNumber: data.phoneNumber || '',
+          phoneNumber: data.phoneNumber || data.contactNo || '',
           email: data.email || '',
           address: getAddressText(data.address),
         })
@@ -112,6 +112,7 @@ const EditClientForm = () => {
     try {
       const payload = {
         ...clientFormData,
+        contactNo: clientFormData.phoneNumber || '',
         address: {
           no: '',
           street: clientFormData.address || '',

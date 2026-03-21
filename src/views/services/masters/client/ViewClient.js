@@ -72,7 +72,7 @@ const ViewClient = () => {
                   </CTableRow>
                   <CTableRow>
                     <CTableHeaderCell>Phone Number</CTableHeaderCell>
-                    <CTableDataCell>{client.phoneNumber || '-'}</CTableDataCell>
+                    <CTableDataCell>{client.phoneNumber || client.contactNo || '-'}</CTableDataCell>
                   </CTableRow>
                   <CTableRow>
                     <CTableHeaderCell>Email</CTableHeaderCell>

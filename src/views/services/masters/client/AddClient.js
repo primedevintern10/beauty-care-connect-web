@@ -81,6 +81,8 @@ const AddClientForm = () => {
 
         const payload = {
           ...clientFormData,
+          // Support both backend field variants.
+          contactNo: clientFormData.phoneNumber || '',
           // Backend expects address as an object, not a plain string.
           address: {
             no: '',

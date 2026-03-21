@@ -90,7 +90,7 @@ const ClientTable = () => {
                     <CTableDataCell>
                       {[client.firstName, client.lastName].filter(Boolean).join(' ') || '-'}
                     </CTableDataCell>
-                    <CTableDataCell>{client.phoneNumber || '-'}</CTableDataCell>
+                    <CTableDataCell>{client.phoneNumber || client.contactNo || '-'}</CTableDataCell>
                     <CTableDataCell>{client.email || '-'}</CTableDataCell>
                     <CTableDataCell>
                       <CLink href={'/client-edit?id=' + client._id} size="sm" className="me-1">
