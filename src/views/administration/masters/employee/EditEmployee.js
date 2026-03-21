@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { CCol, CForm, CFormInput, CFormFeedback, CFormLabel, CButton } from '@coreui/react'
+import {
+  CCol,
+  CForm,
+  CFormInput,
+  CFormFeedback,
+  CFormLabel,
+  CButton,
+  CFormSelect,
+} from '@coreui/react'
 import APIURL from 'src/components/ApiConfig'
 
 const EditEmployeeForm = (employeeProps) => {
@@ -141,15 +149,16 @@ const EditEmployeeForm = (employeeProps) => {
         />
         {/* <CFormFeedback valid>Looks good!</CFormFeedback> */}
         <CFormLabel htmlFor="empStatus">Status</CFormLabel>
-        <CFormInput
-          type="text"
+        <CFormSelect
           id="empStatus"
           name="empStatus"
-          placeholder="Contact Number"
           value={employeeFormData.empStatus}
           onChange={handleEmployeeFormChange}
           required
-        />
+        >
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </CFormSelect>
         <CFormFeedback valid>Looks good!</CFormFeedback>
       </CCol>
       <CCol xs={12}>

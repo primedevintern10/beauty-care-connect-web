@@ -26,6 +26,7 @@ const UserTable = () => {
   const [UserTableData, setUserTableData] = useState([])
   const [UserID, setUserID] = useState('')
   const [UserTableDataByID, setUserTableDataByID] = useState(null)
+  const [deletingUserIds, setDeletingUserIds] = useState([])
 
   const fetchUser = async () => {
     try {
@@ -106,6 +107,12 @@ const UserTable = () => {
       return
     }
 
+    if (deletingUserIds.includes(UserID)) {
+      return
+    }
+
+    setDeletingUserIds((prev) => [...prev, UserID])
+
     try {
       await fetch(APIURL + 'user/' + UserID, {
         method: 'DELETE',
@@ -116,12 +123,14 @@ const UserTable = () => {
       })
         .then(async (response) => {
           const message = await response.text()
-          if (!response.ok) {
+          // Treat 404 as already-deleted to avoid stale-UI delete loops.
+          if (!response.ok && response.status !== 404) {
             throw new Error(message || 'Delete failed')
           }
           return message
         })
         .then(() => {
+          setUserTableData((prev) => prev.filter((User) => (User._id || User.id) !== UserID))
           fetchUser()
         })
         .catch((err) => {
@@ -129,6 +138,8 @@ const UserTable = () => {
         })
     } catch (error) {
       console.error('Error submitting form:', error.message)
+    } finally {
+      setDeletingUserIds((prev) => prev.filter((id) => id !== UserID))
     }
   }
 
@@ -207,7 +218,10 @@ const UserTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
-                            disabled={!(User._id || User.id)}
+                            disabled={
+                              !(User._id || User.id) ||
+                              deletingUserIds.includes(User._id || User.id)
+                            }
                             onClick={() => handleUserDelete(User._id || User.id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />

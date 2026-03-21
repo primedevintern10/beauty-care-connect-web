@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { CCol, CForm, CFormInput, CFormFeedback, CFormLabel, CButton } from '@coreui/react'
+import {
+  CCol,
+  CForm,
+  CFormInput,
+  CFormFeedback,
+  CFormLabel,
+  CButton,
+  CFormSelect,
+} from '@coreui/react'
 import APIURL from 'src/components/ApiConfig'
 
 const AddUserForm = () => {
@@ -13,7 +21,7 @@ const AddUserForm = () => {
     contactNo: '',
     userName: '',
     password: '',
-    empStatus: '',
+    empStatus: 'active',
   })
 
   const handleUserFormChange = (e) => {
@@ -39,7 +47,7 @@ const AddUserForm = () => {
         contactNo: UserFormData.contactNo,
         userName: UserFormData.userName,
         password: UserFormData.password,
-        empStatus: UserFormData.empStatus,
+        empStatus: String(UserFormData.empStatus).toLowerCase(),
       }
 
       await fetch(APIURL + 'user', {
@@ -133,14 +141,16 @@ const AddUserForm = () => {
         />
         {/* <CFormFeedback valid>Looks good!</CFormFeedback> */}
         <CFormLabel htmlFor="empStatus">Status</CFormLabel>
-        <CFormInput
-          type="text"
+        <CFormSelect
           id="empStatus"
           name="empStatus"
-          placeholder="Contact Number"
           value={UserFormData.empStatus}
           onChange={handleUserFormChange}
-        />
+          required
+        >
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </CFormSelect>
         <CFormFeedback valid>Looks good!</CFormFeedback>
       </CCol>
       <CCol xs={12}>
