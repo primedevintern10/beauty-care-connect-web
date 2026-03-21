@@ -69,23 +69,6 @@ const Login = () => {
 
         const data = await response.json()
 
-        // Fetch profile immediately so role-based navigation has userGroupName on first load.
-        let profile = null
-        try {
-          const profileResponse = await fetch(APIURL + 'user/' + data._id, {
-            method: 'GET',
-            headers: {
-              Authorization: 'Bearer ' + data.jwtToken,
-              'Content-type': 'application/json; charset=UTF-8',
-            },
-          })
-          if (profileResponse.ok) {
-            profile = await profileResponse.json()
-          }
-        } catch (profileError) {
-          console.error('Profile fetch after login failed:', profileError)
-        }
-
         setUserTost({
           title: 'User Login',
           message: 'Login Successful...!',
@@ -97,11 +80,8 @@ const Login = () => {
         sessionStorage.setItem('jwt-token', data.jwtToken)
         sessionStorage.setItem('username', data.username)
         sessionStorage.setItem('userID', data._id)
-        sessionStorage.setItem('userGroupID', profile?.role || '')
-        sessionStorage.setItem('userGroupName', profile?.role || '')
-        sessionStorage.setItem('userFName', profile?.firstName || profile?.name || '')
-        sessionStorage.setItem('userLName', profile?.lastName || '')
-        sessionStorage.setItem('userEmail', profile?.email || '')
+        sessionStorage.setItem('userGroupID', data.role || '')
+        sessionStorage.setItem('userGroupName', data.role || '')
 
         window.location.href = '/dashboard'
       } catch (error) {
