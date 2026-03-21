@@ -20,6 +20,7 @@ const AddAppointmentForm = () => {
   const [services, setServices] = useState([])
   const [statuses, setStatuses] = useState([])
   const [validated, setValidated] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [appointmentFormData, setAppointmentFormData] = useState({
     client: { _id: '' },
     services: [],
@@ -138,13 +139,20 @@ const AddAppointmentForm = () => {
   const handleSubmit = async (event) => {
     const form = event.currentTarget
     event.preventDefault()
+    setValidated(true)
+    setSubmitError('')
 
     if (form.checkValidity() === false) {
       event.stopPropagation()
+      setSubmitError('Please fill all required fields before submitting.')
+      return
+    }
+
+    if (appointmentFormData.endTime <= appointmentFormData.startTime) {
+      setSubmitError('End Time must be greater than Start Time.')
+      return
     } else {
       try {
-        setValidated(true)
-
         const branchID = sessionStorage.getItem('branchID')
         const payload = {
           ...appointmentFormData,
@@ -163,10 +171,11 @@ const AddAppointmentForm = () => {
         if (response.ok) {
           window.location.href = '/appointment'
         } else {
-          console.error('Error creating appointment')
+          const errorText = await response.text()
+          setSubmitError('Error creating appointment. ' + (errorText || `Status: ${response.status}`))
         }
       } catch (error) {
-        console.error('Error submitting form:', error.message)
+        setSubmitError('Error submitting form: ' + error.message)
       }
     }
   }
@@ -181,7 +190,13 @@ const AddAppointmentForm = () => {
     >
       <CCol md={6}>
         <CFormLabel htmlFor="client">Client</CFormLabel>
-        <CFormSelect id="client" name="client" onChange={handleClientChange} required>
+        <CFormSelect
+          id="client"
+          name="client"
+          value={appointmentFormData.client._id}
+          onChange={handleClientChange}
+          required
+        >
           <option value="">Choose...</option>
           {clients.map((client, index) => (
             <option key={index} value={client._id}>
@@ -194,7 +209,13 @@ const AddAppointmentForm = () => {
 
       <CCol md={6}>
         <CFormLabel htmlFor="service">Service</CFormLabel>
-        <CFormSelect id="service" name="service" onChange={handleServiceChange} required>
+        <CFormSelect
+          id="service"
+          name="service"
+          value={appointmentFormData.services[0]?._id || ''}
+          onChange={handleServiceChange}
+          required
+        >
           <option value="">Choose...</option>
           {services.map((service, index) => (
             <option key={index} value={service._id}>
@@ -246,7 +267,13 @@ const AddAppointmentForm = () => {
 
       <CCol md={6}>
         <CFormLabel htmlFor="status">Status</CFormLabel>
-        <CFormSelect id="status" name="status" onChange={handleStatusChange} required>
+        <CFormSelect
+          id="status"
+          name="status"
+          value={appointmentFormData.status._id}
+          onChange={handleStatusChange}
+          required
+        >
           <option value="">Choose...</option>
           {statuses.map((stat, index) => (
             <option key={index} value={stat._id}>
@@ -277,6 +304,14 @@ const AddAppointmentForm = () => {
           Submit
         </CButton>
       </CCol>
+
+      {submitError ? (
+        <CCol xs={12}>
+          <CFormFeedback invalid className="d-block">
+            {submitError}
+          </CFormFeedback>
+        </CCol>
+      ) : null}
     </CForm>
   )
 }
