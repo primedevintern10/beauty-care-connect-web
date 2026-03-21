@@ -74,9 +74,19 @@ const Company = (modelProps) => {
     } else {
       setValidated(true)
 
+      const payload = {
+        name: CompanayFormData.name,
+        registrationNo: CompanayFormData.registrationNo,
+        owner: CompanayFormData.owner,
+        email: CompanayFormData.email,
+        webUrl: CompanayFormData.webUrl,
+        country: CompanayFormData.country,
+        currency: CompanayFormData.currency,
+      }
+
       await fetch(APIURL + 'company', {
         method: 'POST',
-        body: JSON.stringify({ ...CompanayFormData, _id: '' }),
+        body: JSON.stringify(payload),
         headers: {
           Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
           'Content-type': 'application/json; charset=UTF-8',

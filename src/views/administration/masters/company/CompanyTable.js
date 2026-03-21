@@ -190,12 +190,16 @@ const CompanyTable = () => {
                         </p>
                       </CTableDataCell> */}
                       <CTableDataCell>
+                        {!(Company._id || Company.id) && (
+                          <small className="text-danger me-2">Invalid ID</small>
+                        )}
                         <CPopover content="Edit" placement="top" trigger={['hover', 'focus']}>
                           <CButton
                             color="warning"
                             variant="outline"
                             size="sm"
                             className="me-1"
+                            disabled={!(Company._id || Company.id)}
                             onClick={() => handleCompanyEdit(true, 'edit', Company._id || Company.id)}
                           >
                             <CIcon icon={cilPen} customClassName="" />
@@ -207,6 +211,7 @@ const CompanyTable = () => {
                             variant="outline"
                             size="sm"
                             className="me-1"
+                            disabled={!(Company._id || Company.id)}
                             onClick={() => handleCompanyDelete(Company._id || Company.id)}
                           >
                             <CIcon icon={cilDelete} customClassName="" />
